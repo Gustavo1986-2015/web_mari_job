@@ -1,11 +1,14 @@
-// Publicación en Cloudflare Workers como sitio estático (sin servidor ni adaptador).
-// El build de Astro genera /dist y Cloudflare lo sirve tal cual, incluidos los _headers.
+// Publicación en Cloudflare Workers: sitio estático de Astro (/dist) con un Worker mínimo
+// (worker/index.js) que redirige www, http y workers.dev al dominio principal.
 {
   "name": "estudiomarianasoregaroli",
+  "main": "worker/index.js",
   "compatibility_date": "2026-09-26",
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": true
   },
   "workers_dev": true,
   "preview_urls": false

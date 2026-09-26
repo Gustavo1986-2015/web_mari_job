@@ -48,8 +48,8 @@ Usa [FormSubmit](https://formsubmit.co), sin registro ni costo. Los mensajes lle
 
 ## Publicación
 
-Publicado en **Cloudflare Workers** como sitio estático (`estudiomarianasoregaroli`), conectado a este repositorio: cada `git push` a `main` publica automáticamente.
+**https://estudiomarianasoregaroli.com**, en Cloudflare Workers (proyecto `estudiomarianasoregaroli`), conectado a este repositorio: cada `git push` a `main` publica automáticamente.
 
-- URL actual: https://estudiomarianasoregaroli.estudiosoregaroli.workers.dev
 - Build: `npm run build` · deploy: `npx wrangler deploy` (usa `wrangler.jsonc`) · Node 22 (`.node-version`).
-- Dominio propio: en Cloudflare, *Workers & Pages → estudiomarianasoregaroli → Settings → Domains & Routes → Add → Custom domain*. Después actualizar `site` en `astro.config.mjs` y hacer push.
+- `worker/index.js` sirve el sitio estático y redirige (301) `www`, `http://` y la URL de `workers.dev` al dominio principal con HTTPS.
+- Dominios: se administran en Cloudflare, en *Workers & Pages → estudiomarianasoregaroli → Settings → Domains & Routes*. Si cambia el dominio, actualizar `HOST` en `worker/index.js` y `site` en `astro.config.mjs`.

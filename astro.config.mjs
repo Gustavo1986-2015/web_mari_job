@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   // Dirección pública del sitio. Cambiar por el dominio propio cuando esté conectado.
-  site: 'https://estudiomarianasoregaroli.estudiosoregaroli.workers.dev',
+  site: 'https://estudiomarianasoregaroli.com',
   devToolbar: { enabled: false },
   integrations: [react(), sitemap({ filter: (page) => !page.includes('/marca') && !page.includes('/404') })],
   vite: {
