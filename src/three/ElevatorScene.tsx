@@ -14,7 +14,7 @@ function Director({ rig, compact, reducedMotion }: { rig: Rig; compact: boolean;
   const camera = useThree((s) => s.camera);
   const target = useMemo(() => new THREE.Vector3(), []);
   const pos = useMemo(() => new THREE.Vector3(), []);
-  const arrival = useRef({ open: false, floor: 0 });
+  const arrival = useRef({ departed: false, floor: 0, still: 0 });
 
   useFrame((_, dt) => {
     dt = Math.min(dt, 0.05);
@@ -33,17 +33,21 @@ function Director({ rig, compact, reducedMotion }: { rig: Rig; compact: boolean;
     const wantOpen = (1 - smoothstep(dist, 0.02, 0.12)) * smoothstep(rig.intro, 0.45, 0.85);
     rig.open = damp(rig.open, wantOpen, 5, dt);
 
-    // Aviso de llegada (campanilla) cuando las puertas empiezan a abrirse.
+    // Aviso de llegada (campanilla): la cabina dejó un piso y se detuvo en otro.
+    // Se basa en la posición y no en las puertas, que en viajes cortos no llegan a cerrarse.
+    // Suena solo si la cabina se detiene (quieta un instante), no al pasar de largo.
     const a = arrival.current;
-    if (!a.open && rig.open > 0.3) {
-      a.open = true;
+    if (dist > 0.2) a.departed = true;
+    a.still = dist < 0.03 && Math.abs(rig.velocity) < 0.25 ? a.still + dt : 0;
+    if (a.departed && a.still > 0.18) {
+      a.departed = false;
       const floor = Math.round(rig.floor);
       if (rig.intro >= 1) {
         const direction = floor >= a.floor ? 'up' : 'down';
         window.dispatchEvent(new CustomEvent('elevator:arrive', { detail: { floor, direction } }));
       }
       a.floor = floor;
-    } else if (a.open && rig.open < 0.1) a.open = false;
+    }
 
     const p = reducedMotion ? { x: 0, y: 0 } : rig.pointer;
     const orbit = 0.62 + Math.sin(rig.floor * 1.3) * 0.12 + p.x * 0.08 - (1 - ease) * 0.5;

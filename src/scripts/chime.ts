@@ -47,15 +47,12 @@ function strike(at: number, freq: number, gain: number) {
   }
 }
 
-// Una campanada al llegar subiendo, dos al llegar bajando.
-export function ding(direction: 'up' | 'down') {
+// Dos campanadas ("ding-dong") en cada llegada.
+export function ding() {
   if (!enabled || !ctx || ctx.state !== 'running') return;
   const t = ctx.currentTime + 0.02;
-  if (direction === 'up') strike(t, 1046.5, 0.16);
-  else {
-    strike(t, 1046.5, 0.15);
-    strike(t + 0.32, 880, 0.15);
-  }
+  strike(t, 1046.5, 0.15);
+  strike(t + 0.32, 880, 0.15);
 }
 
 export function isSoundOn() {
@@ -71,10 +68,10 @@ export function setSound(on: boolean) {
   }
   if (on) {
     unlock();
-    ding('up'); // confirmación audible al activarlo
+    ding(); // confirmación audible al activarlo
   }
 }
 
-window.addEventListener('elevator:arrive', (e) => {
-  ding((e as CustomEvent<{ direction: 'up' | 'down' }>).detail.direction);
+window.addEventListener('elevator:arrive', () => {
+  ding();
 });
