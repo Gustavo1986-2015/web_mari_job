@@ -35,5 +35,8 @@
     "opentype.js": "^2.0.0",
     "simple-icons": "^16.32.0",
     "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -48,4 +48,7 @@ Usa [FormSubmit](https://formsubmit.co), sin registro ni costo. Los mensajes lle
 
 ## Publicación
 
-Es un sitio estático: sirve cualquier hosting gratuito (Vercel, Netlify o Cloudflare Pages), con build `npm run build` y carpeta de salida `dist`.
+Publicado en **Cloudflare Pages** (proyecto `estudiomarianasoregaroli`), conectado a este repositorio: cada `git push` a `main` publica automáticamente.
+
+- Build: `npm run build` · salida: `dist` · Node 22 (archivo `.node-version`).
+- Al conectar el dominio propio: actualizar `site` en `astro.config.mjs` y hacer push.

@@ -5,8 +5,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  // Reemplazar por el dominio definitivo cuando esté registrado.
-  site: 'https://soregaroli.com.ar',
+  // Dirección pública del sitio. Cambiar por el dominio propio cuando esté conectado.
+  site: 'https://estudiomarianasoregaroli.pages.dev',
   devToolbar: { enabled: false },
   integrations: [react(), sitemap({ filter: (page) => !page.includes('/marca') })],
   vite: {
