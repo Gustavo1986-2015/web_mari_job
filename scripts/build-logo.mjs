@@ -66,45 +66,70 @@ function mark({ frame, door, accent, bg = null }, t = '') {
   </g>`;
 }
 
-const WORD = 'SOREGAROLI';
-const SUB = 'ESTUDIO TÉCNICO · ASCENSORES';
+const NAME = 'MARIANA SOREGAROLI';
+const ASOC = '& ASOC.';
+const SUB = 'ESTUDIO TÉCNICO DE ASCENSORES';
+const LABEL = 'Mariana Soregaroli &amp; Asoc.'; // escapado para XML
+const TRACK = 0.05;
 
+// Texto con tracking calculado para ocupar exactamente `width`.
+function fitted(font, text, x, baseline, size, width) {
+  const raw = textPath(font, text, 0, 0, size, 0).width;
+  return textPath(font, text, x, baseline, size, (width - raw) / (text.length - 1) / size);
+}
+
+const palette = (dark) => ({
+  mark: { frame: dark ? '#FFFFFF' : C.steelDark, door: dark ? '#FFFFFF' : C.steelDark, accent: C.amber },
+  word: dark ? '#FFFFFF' : C.navy,
+  sub: dark ? '#BCD6F3' : C.mutedDark,
+});
+
+// Una línea: "MARIANA SOREGAROLI & ASOC." + subtítulo del mismo ancho.
 function wordmark(x, baseline, size, colors) {
-  const w = textPath(bold, WORD, x, baseline, size, 0.06);
-  // Subtítulo con tracking calculado para igualar el ancho de la marca.
-  const subSize = size * 0.3;
-  const raw = textPath(medium, SUB, 0, 0, subSize, 0).width;
-  const gaps = SUB.length - 1;
-  const tracking = (w.width - raw) / gaps / subSize;
-  const s = textPath(medium, SUB, x, baseline + size * 0.62, subSize, tracking);
+  const n = textPath(bold, NAME, x, baseline, size, TRACK);
+  const a = textPath(medium, ASOC, x + n.width + size * 0.34, baseline, size, TRACK);
+  const width = n.width + size * 0.34 + a.width;
+  const s = fitted(medium, SUB, x, baseline + size * 0.62, size * 0.3, width);
   return {
-    svg: `<path d="${w.d}" fill="${colors.word}"/><path d="${s.d}" fill="${colors.sub}"/>`,
-    width: w.width,
+    svg: `<path d="${n.d}" fill="${colors.word}"/><path d="${a.d}" fill="${colors.word}" fill-opacity="0.82"/><path d="${s.d}" fill="${colors.sub}"/>`,
+    width,
   };
 }
 
 function horizontal(theme) {
-  const dark = theme === 'dark';
-  const m = mark({ frame: dark ? C.steel : C.steelDark, door: dark ? C.steel : C.steelDark, accent: C.amber });
-  const wm = wordmark(84, 37, 33, { word: dark ? C.steel : C.navy, sub: dark ? C.muted : C.mutedDark });
+  const p = palette(theme === 'dark');
+  const wm = wordmark(84, 37, 33, p);
   const W = Math.ceil(84 + wm.width + 2);
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 64" width="${W * 3}" height="192" role="img" aria-label="Estudio Técnico Soregaroli">${m}${wm.svg}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 64" role="img" aria-label="${LABEL}">${mark(p.mark)}${wm.svg}</svg>`;
+}
+
+// Dos líneas, para celulares y la barra flotante: nombre arriba, "& ASOC. · ESTUDIO TÉCNICO" abajo.
+function compact(theme) {
+  const p = palette(theme === 'dark');
+  const size = 25;
+  const n = textPath(bold, NAME, 82, 27, size, TRACK);
+  const a = textPath(bold, ASOC, 82, 56, size, TRACK);
+  const subX = 82 + a.width + 12;
+  const s = fitted(medium, 'ESTUDIO TÉCNICO', subX, 55, 10.5, n.width - a.width - 12);
+  const W = Math.ceil(82 + n.width + 2);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 64" role="img" aria-label="${LABEL}">${mark(p.mark)}<path d="${n.d}" fill="${p.word}"/><path d="${a.d}" fill="${p.word}" fill-opacity="0.82"/><path d="${s.d}" fill="${p.sub}"/></svg>`;
 }
 
 function stacked(theme) {
-  const dark = theme === 'dark';
-  const probe = wordmark(0, 0, 40, { word: '', sub: '' }).width;
-  const W = Math.ceil(probe + 8);
-  const wm = wordmark(4, 140, 40, { word: dark ? C.steel : C.navy, sub: dark ? C.muted : C.mutedDark });
-  const m = mark(
-    { frame: dark ? C.steel : C.steelDark, door: dark ? C.steel : C.steelDark, accent: C.amber },
-    `translate(${(W - 88) / 2} 8) scale(1.375)`,
-  );
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 170" role="img" aria-label="Estudio Técnico Soregaroli">${m}${wm.svg}</svg>`;
+  const p = palette(theme === 'dark');
+  const size = 40;
+  const nw = textPath(bold, NAME, 0, 0, size, TRACK).width;
+  const aw = textPath(bold, ASOC, 0, 0, size, TRACK).width;
+  const W = Math.ceil(nw + 8);
+  const n = textPath(bold, NAME, 4, 142, size, TRACK);
+  const a = textPath(bold, ASOC, (W - aw) / 2, 190, size, TRACK);
+  const s = fitted(medium, SUB, 4, 222, 12, nw);
+  const m = mark(p.mark, `translate(${(W - 88) / 2} 8) scale(1.375)`);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 232" role="img" aria-label="${LABEL}">${m}<path d="${n.d}" fill="${p.word}"/><path d="${a.d}" fill="${p.word}" fill-opacity="0.82"/><path d="${s.d}" fill="${p.sub}"/></svg>`;
 }
 
 const isotipo = (theme) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Soregaroli">${mark({
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="${LABEL}">${mark({
     frame: theme === 'dark' ? C.steel : C.steelDark,
     door: theme === 'dark' ? C.steel : C.steelDark,
     accent: C.amber,
@@ -115,28 +140,33 @@ const appIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">${m
   frame: C.steel,
   door: C.steel,
   accent: C.amber,
-  bg: C.ink,
+  bg: '#174E8A',
 })}</svg>`;
 
 function ogImage() {
   const W = 1200, H = 630;
-  const lockup = `<g transform="translate(96 96)">${mark({ frame: C.steel, door: C.steel, accent: C.amber }, 'scale(1.35)')}<g transform="translate(118 50)">${wordmark(0, 0, 44, { word: C.steel, sub: C.muted }).svg}</g></g>`;
+  // Lámina de plano azul, igual que la portada del sitio.
+  const lockup = `<g transform="translate(96 96)">${mark({ frame: '#FFFFFF', door: '#FFFFFF', accent: C.amber }, 'scale(1.35)')}<g transform="translate(118 50)">${wordmark(0, 0, 44, { word: '#FFFFFF', sub: '#BCD6F3' }).svg}</g></g>`;
   const h1 = textPath(bold, 'Habilitaciones y gestoría', 96, 380, 64, -0.01);
   const h2 = textPath(bold, 'de ascensores en CABA', 96, 452, 64, -0.01);
-  const sub = textPath(medium, 'OBLEA QR RES. 430  ·  PERMISO DE CONSERVADOR  ·  +40 AÑOS', 96, 530, 20, 0.12);
-  const grid = Array.from({ length: 13 }, (_, i) => `<line x1="${i * 100}" y1="0" x2="${i * 100}" y2="${H}"/>`).join('') +
-    Array.from({ length: 7 }, (_, i) => `<line x1="0" y1="${i * 100 + 15}" x2="${W}" y2="${i * 100 + 15}"/>`).join('');
+  const sub = textPath(medium, 'OBLEA QR RES. 430  ·  PERMISO DE CONSERVADOR  ·  +15 AÑOS', 96, 530, 20, 0.12);
+  const lines = (step, op) =>
+    `<g stroke="#ffffff" stroke-opacity="${op}">` +
+    Array.from({ length: Math.ceil(W / step) + 1 }, (_, i) => `<line x1="${i * step}" y1="0" x2="${i * step}" y2="${H}"/>`).join('') +
+    Array.from({ length: Math.ceil(H / step) + 1 }, (_, i) => `<line x1="0" y1="${i * step}" x2="${W}" y2="${i * step}"/>`).join('') +
+    '</g>';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
     <defs>
-      <radialGradient id="g" cx="0.85" cy="0.2" r="0.9"><stop offset="0" stop-color="#1B2636"/><stop offset="1" stop-color="${C.ink}"/></radialGradient>
-      <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${C.amber}" stop-opacity="0"/><stop offset="0.5" stop-color="${C.amber}" stop-opacity="0.9"/><stop offset="1" stop-color="${C.amber}" stop-opacity="0"/></linearGradient>
+      <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#113C6D"/><stop offset="0.55" stop-color="#18528F"/><stop offset="1" stop-color="#1F5F9F"/></linearGradient>
+      <radialGradient id="glow" cx="0.8" cy="0.25" r="0.6"><stop offset="0" stop-color="#4C91DC" stop-opacity="0.55"/><stop offset="1" stop-color="#4C91DC" stop-opacity="0"/></radialGradient>
     </defs>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
-    <g stroke="#ffffff" stroke-opacity="0.04">${grid}</g>
-    <rect x="1010" y="0" width="3" height="${H}" fill="url(#beam)"/>
+    <rect width="${W}" height="${H}" fill="url(#glow)"/>
+    ${lines(24, 0.05)}${lines(120, 0.12)}
+    <rect x="18" y="18" width="${W - 36}" height="${H - 36}" rx="14" fill="none" stroke="#ffffff" stroke-opacity="0.25"/>
     ${lockup}
-    <path d="${h1.d}" fill="#F3F5F8"/><path d="${h2.d}" fill="#F3F5F8"/>
-    <path d="${sub.d}" fill="${C.amber}"/>
+    <path d="${h1.d}" fill="#FFFFFF"/><path d="${h2.d}" fill="#FFFFFF"/>
+    <path d="${sub.d}" fill="#FFC56B"/>
   </svg>`;
 }
 
@@ -148,12 +178,16 @@ const files = {
   'brand/logo-horizontal-claro.svg': horizontal('light'),
   'brand/logo-vertical-oscuro.svg': stacked('dark'),
   'brand/logo-vertical-claro.svg': stacked('light'),
+  'brand/logo-compacto-oscuro.svg': compact('dark'),
+  'brand/logo-compacto-claro.svg': compact('light'),
   'brand/isotipo-oscuro.svg': isotipo('dark'),
   'brand/isotipo-claro.svg': isotipo('light'),
   'brand/icono-app.svg': appIcon,
   'public/favicon.svg': appIcon,
   'public/logo.svg': horizontal('dark'),
   'public/logo-claro.svg': horizontal('light'),
+  'public/logo-compacto.svg': compact('dark'),
+  'public/logo-compacto-claro.svg': compact('light'),
   'public/logo-vertical.svg': stacked('dark'),
   'public/logo-vertical-claro.svg': stacked('light'),
   'public/isotipo.svg': isotipo('dark'),

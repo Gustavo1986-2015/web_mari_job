@@ -1,0 +1,40 @@
+---
+// Íconos usados desde los datos de src/config/site.ts (por nombre).
+import {
+  BadgeCheck,
+  Cpu,
+  FileText,
+  ClipboardList,
+  SearchCheck,
+  IdCard,
+  BookOpenCheck,
+  ArrowLeftRight,
+  FileStack,
+  House,
+  LockOpen,
+} from '@lucide/astro';
+
+const icons = {
+  'badge-check': BadgeCheck,
+  cpu: Cpu,
+  'file-text': FileText,
+  'clipboard-list': ClipboardList,
+  'search-check': SearchCheck,
+  'id-card': IdCard,
+  'book-open-check': BookOpenCheck,
+  'arrow-left-right': ArrowLeftRight,
+  'file-stack': FileStack,
+  house: House,
+  'lock-open': LockOpen,
+};
+
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  class?: string;
+}
+const { name, size = 22, class: className } = Astro.props;
+const Cmp = icons[name];
+---
+
+<Cmp size={size} stroke-width={1.7} class={className} />

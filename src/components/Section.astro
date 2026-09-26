@@ -1,0 +1,17 @@
+---
+// Contenedor de sección: ocupa la columna izquierda (el panel del plano queda a la derecha).
+interface Props {
+  id: string;
+  floor: number;
+  class?: string;
+}
+const { id, floor, class: className = '' } = Astro.props;
+---
+
+<section id={id} data-floor={floor} class:list={['relative scroll-mt-24 py-24 sm:py-32', className]}>
+  <div class="px-6 sm:px-10 xl:px-16">
+    <div class="mx-auto max-w-[760px] lg:mx-0">
+      <slot />
+    </div>
+  </div>
+</section>

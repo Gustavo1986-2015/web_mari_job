@@ -1,109 +1,111 @@
 ---
-import { Phone, Mail, MapPin, Send, LoaderCircle, Check, CircleAlert } from '@lucide/astro';
+import { Phone, Mail, MapPin, Send, LoaderCircle, Check, CircleAlert, ChevronDown } from '@lucide/astro';
+import Section from '../Section.astro';
 import SectionHeading from '../SectionHeading.astro';
 import WhatsAppIcon from '../WhatsAppIcon.astro';
 import { site, services, whatsappUrl, form } from '../../config/site';
 ---
 
-<section id="contacto" data-floor="4" class="relative scroll-mt-20 pt-28 pb-24 sm:pt-36">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="max-w-[680px]">
-      <SectionHeading floor="4" eyebrow="Cotización" title="Solicite su cotización.">
-        Complete el formulario y le respondemos a la brevedad. Si lo prefiere, escríbanos por WhatsApp.
-      </SectionHeading>
+<Section id="contacto" floor={4} class="!pb-16">
+  <SectionHeading floor="4" eyebrow="Cotización" title="Solicite su cotización.">
+    Complete el formulario y le respondemos a la brevedad. Si lo prefiere, escríbanos por WhatsApp.
+  </SectionHeading>
 
-      <form
-        id="quote-form"
-        class="card mt-12 p-6 sm:p-8"
-        action={form.endpoint.replace('/ajax', '')}
-        method="POST"
-        data-endpoint={form.endpoint}
-        data-reveal
-        novalidate
-      >
-        <input type="hidden" name="_subject" value={form.subject} />
-        <input type="hidden" name="_cc" value={form.cc} />
-        <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_captcha" value="false" />
-        <!-- Trampa anti-spam: los humanos no la ven -->
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="absolute -left-[9999px]" aria-hidden="true" />
+  <form
+    id="quote-form"
+    class="card mt-12 p-6 sm:p-9"
+    action={form.endpoint.replace('/ajax', '')}
+    method="POST"
+    data-endpoint={form.endpoint}
+    data-reveal
+    novalidate
+  >
+    <input type="hidden" name="_subject" value={form.subject} />
+    <input type="hidden" name="_cc" value={form.cc} />
+    <input type="hidden" name="_template" value="table" />
+    <input type="hidden" name="_captcha" value="false" />
+    <!-- Trampa anti-spam: los humanos no la ven -->
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="absolute -left-[9999px]" aria-hidden="true" />
 
-        <div class="grid gap-4 sm:grid-cols-2">
-          <label class="block">
-            <span class="mb-2 block text-sm text-steel-2">Nombre</span>
-            <input class="field" name="nombre" autocomplete="given-name" required />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm text-steel-2">Apellido</span>
-            <input class="field" name="apellido" autocomplete="family-name" required />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm text-steel-2">Email</span>
-            <input class="field" type="email" name="email" autocomplete="email" required />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm text-steel-2">Teléfono</span>
-            <input class="field" type="tel" name="telefono" autocomplete="tel" inputmode="tel" required />
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="mb-2 block text-sm text-steel-2">Servicio</span>
-            <select class="field appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2216%22 height=%2216%22 fill=%22none%22 stroke=%22%238793a4%22 stroke-width=%222%22><path d=%22m4 6 4 4 4-4%22/></svg>')] bg-[position:right_1rem_center] bg-no-repeat pr-10" name="servicio" required>
-              <option value="" disabled selected>Seleccione un servicio</option>
-              {services.map((s) => <option class="bg-panel">{s}</option>)}
-            </select>
-          </label>
-          <label class="block sm:col-span-2">
-            <span class="mb-2 block text-sm text-steel-2">Comentarios <span class="text-muted">(opcional)</span></span>
-            <textarea class="field min-h-32 resize-y" name="comentarios" rows="4" placeholder="Dirección del edificio, cantidad de ascensores, plazos…"></textarea>
-          </label>
-        </div>
-
-        <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p class="text-xs leading-relaxed text-muted">Sus datos se usan solo para responder su consulta.</p>
-          <button type="submit" class="btn-primary group min-w-44 disabled:cursor-wait disabled:opacity-70">
-            <span data-state="idle" class="inline-flex items-center gap-2">Enviar solicitud <Send size={16} class="transition-transform group-hover:translate-x-0.5" /></span>
-            <span data-state="loading" class="hidden items-center gap-2"><LoaderCircle size={16} class="animate-spin" /> Enviando…</span>
-          </button>
-        </div>
-
-        <div data-feedback="success" role="status" class="mt-6 hidden items-start gap-3 rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-4 text-sm text-emerald-100">
-          <Check size={18} class="mt-0.5 shrink-0 text-emerald-400" />
-          <p><strong class="font-semibold text-white">¡Gracias por su mensaje!</strong> Recibimos su solicitud y le responderemos a la brevedad.</p>
-        </div>
-        <div data-feedback="error" role="alert" class="mt-6 hidden items-start gap-3 rounded-xl border border-red-400/30 bg-red-400/10 p-4 text-sm text-red-100">
-          <CircleAlert size={18} class="mt-0.5 shrink-0 text-red-400" />
-          <p data-error-text>No pudimos enviar el formulario. Intente nuevamente o escríbanos por WhatsApp.</p>
-        </div>
-      </form>
-
-      <ul class="mt-4 grid gap-3 sm:grid-cols-2" data-reveal-group>
-        <li data-reveal>
-          <a href={site.phone.href} class="card card-glow flex h-full items-center gap-4 p-5 transition hover:border-white/20">
-            <span class="grid size-11 shrink-0 place-items-center rounded-full bg-amber/15 text-amber"><Phone size={19} /></span>
-            <span><span class="block text-xs text-muted">Teléfono</span><span class="font-display text-lg font-semibold text-white">{site.phone.display}</span></span>
-          </a>
-        </li>
-        <li data-reveal>
-          <a href={whatsappUrl()} target="_blank" rel="noopener" class="card card-glow flex h-full items-center gap-4 p-5 transition hover:border-white/20">
-            <span class="grid size-11 shrink-0 place-items-center rounded-full bg-[#25D366]/15 text-[#25D366]"><WhatsAppIcon size={19} /></span>
-            <span><span class="block text-xs text-muted">WhatsApp</span><span class="font-display text-lg font-semibold text-white">Escribir ahora</span></span>
-          </a>
-        </li>
-        <li class="card flex items-start gap-4 p-5 sm:col-span-2" data-reveal>
-          <span class="grid size-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-steel"><Mail size={19} /></span>
-          <span class="min-w-0">
-            <span class="block text-xs text-muted">Email</span>
-            {site.emails.map((e) => <a href={`mailto:${e}`} class="block truncate text-[15px] text-white transition hover:text-amber">{e}</a>)}
-          </span>
-        </li>
-        <li class="card flex items-center gap-4 p-5 sm:col-span-2" data-reveal>
-          <span class="grid size-11 shrink-0 place-items-center rounded-full bg-white/[0.06] text-steel"><MapPin size={19} /></span>
-          <span><span class="block text-xs text-muted">Zona de trabajo</span><span class="text-[15px] text-white">{site.location}</span></span>
-        </li>
-      </ul>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="mb-2 block text-sm font-medium text-ink">Nombre</span>
+        <input class="field" name="nombre" autocomplete="given-name" required />
+      </label>
+      <label class="block">
+        <span class="mb-2 block text-sm font-medium text-ink">Apellido</span>
+        <input class="field" name="apellido" autocomplete="family-name" required />
+      </label>
+      <label class="block">
+        <span class="mb-2 block text-sm font-medium text-ink">Email</span>
+        <input class="field" type="email" name="email" autocomplete="email" required />
+      </label>
+      <label class="block">
+        <span class="mb-2 block text-sm font-medium text-ink">Teléfono</span>
+        <input class="field" type="tel" name="telefono" autocomplete="tel" inputmode="tel" required />
+      </label>
+      <label class="relative block sm:col-span-2">
+        <span class="mb-2 block text-sm font-medium text-ink">Servicio</span>
+        <select class="field appearance-none pr-11" name="servicio" required>
+          <option value="" disabled selected>Seleccione un servicio</option>
+          {services.map((s) => <option>{s}</option>)}
+        </select>
+        <ChevronDown size={18} class="pointer-events-none absolute right-4 bottom-4 text-muted" />
+      </label>
+      <label class="block sm:col-span-2">
+        <span class="mb-2 block text-sm font-medium text-ink">Comentarios <span class="font-normal text-muted">(opcional)</span></span>
+        <textarea class="field min-h-32 resize-y" name="comentarios" rows="4" placeholder="Dirección del edificio, cantidad de ascensores, plazos…"></textarea>
+      </label>
     </div>
-  </div>
-</section>
+
+    <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-xs leading-relaxed text-muted">Sus datos se usan solo para responder su consulta.</p>
+      <button type="submit" class="btn-primary group min-w-48 disabled:cursor-wait disabled:opacity-70">
+        <span data-state="idle" class="inline-flex items-center gap-2">Enviar solicitud <Send size={16} class="transition-transform group-hover:translate-x-0.5" /></span>
+        <span data-state="loading" class="hidden items-center gap-2"><LoaderCircle size={16} class="animate-spin" /> Enviando…</span>
+      </button>
+    </div>
+
+    <div data-feedback="success" role="status" class="mt-6 hidden items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+      <Check size={18} class="mt-0.5 shrink-0 text-emerald-600" />
+      <p><strong class="font-semibold">¡Gracias por su mensaje!</strong> Recibimos su solicitud y le responderemos a la brevedad.</p>
+    </div>
+    <div data-feedback="error" role="alert" class="mt-6 hidden items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+      <CircleAlert size={18} class="mt-0.5 shrink-0 text-red-600" />
+      <p>
+        No pudimos enviar el formulario en este momento. Por favor, escríbanos por
+        <a href={whatsappUrl()} target="_blank" rel="noopener" class="font-semibold underline">WhatsApp</a> o llame al
+        <a href={site.phone.href} class="font-semibold underline">{site.phone.display}</a>.
+      </p>
+    </div>
+  </form>
+
+  <ul class="mt-4 grid gap-3 sm:grid-cols-2" data-reveal-group>
+    <li data-reveal>
+      <a href={site.phone.href} class="card card-hover flex h-full items-center gap-4 p-5">
+        <span class="icon-tile size-11 rounded-full"><Phone size={19} /></span>
+        <span><span class="block text-xs text-muted">Teléfono</span><span class="font-display text-lg font-semibold text-ink">{site.phone.display}</span></span>
+      </a>
+    </li>
+    <li data-reveal>
+      <a href={whatsappUrl()} target="_blank" rel="noopener" class="card card-hover flex h-full items-center gap-4 p-5">
+        <span class="grid size-11 shrink-0 place-items-center rounded-full bg-[#25D366]/15 text-[#128C7E]"><WhatsAppIcon size={19} /></span>
+        <span><span class="block text-xs text-muted">WhatsApp</span><span class="font-display text-lg font-semibold text-ink">Escribir ahora</span></span>
+      </a>
+    </li>
+    <li class="card flex items-start gap-4 p-5 sm:col-span-2" data-reveal>
+      <span class="icon-tile size-11 rounded-full"><Mail size={19} /></span>
+      <span class="min-w-0">
+        <span class="block text-xs text-muted">Email</span>
+        {site.emails.map((e) => <a href={`mailto:${e}`} class="block truncate text-[15px] font-medium text-ink transition hover:text-bp-600">{e}</a>)}
+      </span>
+    </li>
+    <li class="card flex items-center gap-4 p-5 sm:col-span-2" data-reveal>
+      <span class="icon-tile size-11 rounded-full"><MapPin size={19} /></span>
+      <span><span class="block text-xs text-muted">Zona de trabajo</span><span class="text-[15px] font-medium text-ink">{site.location}</span></span>
+    </li>
+  </ul>
+</Section>
 
 <script>
   const formEl = document.getElementById('quote-form') as HTMLFormElement;
@@ -117,11 +119,19 @@ import { site, services, whatsappUrl, form } from '../../config/site';
     show(button.querySelector('[data-state=idle]'), !on);
     show(button.querySelector('[data-state=loading]'), on);
   };
+  const markInvalid = (f: HTMLInputElement) => f.classList.toggle('!border-red-400', !f.checkValidity());
+
+  // Los botones "Solicitar" de cada trámite lo dejan elegido en el formulario.
+  const select = formEl.querySelector<HTMLSelectElement>('select[name=servicio]')!;
+  document.querySelectorAll<HTMLElement>('[data-service]').forEach((a) =>
+    a.addEventListener('click', () => {
+      select.value = a.dataset.service!;
+      select.classList.remove('!border-red-400');
+    }),
+  );
 
   // Marca campos inválidos solo después de que el usuario interactuó.
-  formEl.querySelectorAll<HTMLInputElement>('.field').forEach((f) => {
-    f.addEventListener('blur', () => f.classList.toggle('!border-red-400/70', !f.checkValidity()));
-  });
+  formEl.querySelectorAll<HTMLInputElement>('.field').forEach((f) => f.addEventListener('blur', () => markInvalid(f)));
 
   formEl.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -129,9 +139,7 @@ import { site, services, whatsappUrl, form } from '../../config/site';
     show(formEl.querySelector('[data-feedback=error]'), false);
 
     if (!formEl.checkValidity()) {
-      formEl.querySelectorAll<HTMLInputElement>('.field').forEach((f) =>
-        f.classList.toggle('!border-red-400/70', !f.checkValidity()),
-      );
+      formEl.querySelectorAll<HTMLInputElement>('.field').forEach(markInvalid);
       formEl.querySelector<HTMLInputElement>(':invalid')?.focus();
       return;
     }
@@ -145,7 +153,11 @@ import { site, services, whatsappUrl, form } from '../../config/site';
         body: JSON.stringify(data),
       });
       const json = await res.json().catch(() => ({}));
-      if (!res.ok || json.success === 'false' || json.success === false) throw new Error(json.message);
+      if (!res.ok || String(json.success) !== 'true') {
+        // Si FormSubmit aún no fue activado, lo indica en `message`.
+        console.warn('[formulario]', json.message ?? res.status);
+        throw new Error(json.message);
+      }
       formEl.reset();
       show(formEl.querySelector('[data-feedback=success]'), true);
     } catch {

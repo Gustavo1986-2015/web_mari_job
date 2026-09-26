@@ -3,25 +3,23 @@ import { site, whatsappUrl } from '../config/site';
 const year = new Date().getFullYear();
 ---
 
-<footer class="relative border-t border-line bg-ink/80 backdrop-blur-xl">
-  <div class="mx-auto flex max-w-7xl flex-col gap-10 px-5 py-14 sm:px-8 md:flex-row md:items-start md:justify-between">
+<footer class="m-2 overflow-hidden rounded-[24px] bg-bp-950 text-white sm:m-3 sm:rounded-[28px] lg:mr-[calc(var(--panel-w)+24px)]">
+  <div class="flex flex-col gap-10 px-6 py-12 sm:px-10 md:flex-row md:items-start md:justify-between xl:px-16">
     <div class="max-w-sm">
-      <img src="/logo.svg" alt={site.name} width="205" height="38" loading="lazy" class="h-9 w-auto" />
-      <p class="mt-5 text-sm leading-relaxed text-muted">
+      <img src="/logo-compacto.svg" alt={site.name} width="300" height="50" loading="lazy" class="h-12 w-auto" />
+      <p class="mt-5 text-sm leading-relaxed text-white/60">
         Habilitaciones, Obleas QR y gestoría de ascensores ante el G.C.B.A. Más de {site.years} años de experiencia en {site.location}.
       </p>
     </div>
     <nav class="grid grid-cols-2 gap-x-14 gap-y-3 text-sm" aria-label="Pie de página">
-      <a href="#servicios" class="text-steel-2 hover:text-white">Servicios</a>
-      <a href={site.phone.href} class="text-steel-2 hover:text-white">{site.phone.display}</a>
-      <a href="#gestoria" class="text-steel-2 hover:text-white">Gestoría</a>
-      <a href={whatsappUrl()} target="_blank" rel="noopener" class="text-steel-2 hover:text-white">WhatsApp</a>
-      <a href="#nosotros" class="text-steel-2 hover:text-white">Nosotros</a>
-      <a href={`mailto:${site.emails[0]}`} class="text-steel-2 hover:text-white">Email</a>
-      <a href="#contacto" class="text-steel-2 hover:text-white">Cotización</a>
+      <a href="#gestoria" class="text-white/70 hover:text-white">Gestoría</a>
+      <a href={site.phone.href} class="text-white/70 hover:text-white">{site.phone.display}</a>
+      <a href="#servicios" class="text-white/70 hover:text-white">Servicios</a>
+      <a href={whatsappUrl()} target="_blank" rel="noopener" class="text-white/70 hover:text-white">WhatsApp</a>
+      <a href="#nosotros" class="text-white/70 hover:text-white">Nosotros</a>
+      <a href={`mailto:${site.emails[0]}`} class="text-white/70 hover:text-white">Email</a>
+      <a href="#contacto" class="text-white/70 hover:text-white">Cotización</a>
     </nav>
   </div>
-  <div class="border-t border-line">
-    <p class="mx-auto max-w-7xl px-5 py-6 text-xs text-muted/80 sm:px-8">© {year} {site.name}. Todos los derechos reservados.</p>
-  </div>
+  <p class="border-t border-white/10 px-6 py-5 text-xs text-white/45 sm:px-10 xl:px-16">© {year} {site.name}. Todos los derechos reservados.</p>
 </footer>

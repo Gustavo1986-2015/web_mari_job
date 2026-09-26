@@ -1,87 +1,106 @@
 ---
-import {
-  QrCode,
-  BookOpenCheck,
-  House,
-  FileStack,
-  ArrowLeftRight,
-  IdCard,
-  LockOpen,
-  TriangleAlert,
-  ArrowRight,
-} from '@lucide/astro';
+import { QrCode, TriangleAlert, ArrowRight, Check } from '@lucide/astro';
+import Section from '../Section.astro';
 import SectionHeading from '../SectionHeading.astro';
-
-const items = [
-  { icon: BookOpenCheck, title: 'Libro Digital de Inspección' },
-  { icon: House, title: 'Informe de Dominio del inmueble' },
-  { icon: FileStack, title: 'Duplicado de Expediente de Habilitación' },
-  { icon: ArrowLeftRight, title: 'Transferencia de Titularidad de Habilitación' },
-  { icon: IdCard, title: 'Renovación del Permiso de Conservador' },
-  { icon: LockOpen, title: 'Levantamiento de Clausuras' },
-];
+import Icon from '../Icon.astro';
+import { habilitacion, paperwork, qrInstallations } from '../../config/site';
 ---
 
-<section id="gestoria" data-floor="2" class="relative scroll-mt-20 py-28 sm:py-36">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="max-w-[680px]">
-      <SectionHeading floor="2" eyebrow="Gestoría ante el G.C.B.A." title="Todos los trámites de su edificio, en un solo lugar.">
-        Conocemos cada paso administrativo. Presentamos, seguimos y resolvemos los trámites para que usted no pierda tiempo.
-      </SectionHeading>
+<Section id="gestoria" floor={1}>
+  <SectionHeading floor="1" eyebrow="Gestoría ante el G.C.B.A." title="Los trámites que más resolvemos.">
+    Conocemos cada paso administrativo. Presentamos, seguimos y resolvemos los trámites para que usted no pierda tiempo.
+  </SectionHeading>
 
-      <!-- Trámite destacado -->
-      <article class="card card-glow mt-14 p-7 sm:p-9" data-reveal>
-        <div class="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-amber/15 blur-3xl"></div>
-        <div class="relative flex flex-col gap-7 sm:flex-row sm:items-center">
-          <div class="grid size-24 shrink-0 place-items-center rounded-2xl border border-amber/30 bg-[#050608] text-amber shadow-[0_0_40px_-8px_rgb(242_169_59/0.5)]">
-            <QrCode size={48} stroke-width={1.4} />
-          </div>
-          <div>
-            <p class="font-display text-xs font-medium tracking-[0.2em] text-amber uppercase">Resolución N.º 430</p>
-            <h3 class="mt-2 font-display text-2xl font-semibold text-white sm:text-3xl">Obleas Código QR</h3>
-            <p class="mt-3 leading-relaxed text-steel-2">
-              Gestionamos la oblea obligatoria para cada instalación del edificio.
-            </p>
-            <ul class="mt-4 flex flex-wrap gap-2 text-sm">
-              {['Ascensores', 'Instalaciones térmicas', 'Incendio'].map((t) => (
-                <li class="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-steel">{t}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </article>
+  <!-- Trámite destacado: habilitaciones (a todo el ancho) -->
+  <article class="blueprint sheet-frame relative mt-12 overflow-hidden rounded-3xl p-8 text-white shadow-[0_30px_60px_-30px_rgb(15_58_104/0.7)] sm:p-11" data-reveal>
+    <div class="relative">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <span class="inline-flex items-center rounded-full bg-amber-soft px-3.5 py-1.5 font-display text-xs font-semibold tracking-[0.16em] text-bp-900 uppercase">
+          Trámite destacado
+        </span>
+        <span class="grid size-14 place-items-center rounded-2xl bg-white/15 text-white ring-1 ring-white/30">
+          <Icon name={habilitacion.icon} size={28} />
+        </span>
+      </div>
 
-      <ul class="mt-4 grid gap-3 sm:grid-cols-2" data-reveal-group>
-        {
-          items.map((it) => (
-            <li class="card card-glow flex items-center gap-4 p-4 pr-5 transition duration-500 hover:border-white/15" data-reveal>
-              <span class="grid size-11 shrink-0 place-items-center rounded-lg bg-white/[0.05] text-amber">
-                <it.icon size={20} stroke-width={1.6} />
-              </span>
-              <span class="text-[15px] leading-snug font-medium text-steel">{it.title}</span>
-            </li>
-          ))
-        }
+      <h3 class="mt-7 font-display text-3xl leading-[1.1] font-semibold text-balance sm:text-[2.6rem]">{habilitacion.title}</h3>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-white/85">{habilitacion.text}</p>
+
+      <ul class="mt-8 grid gap-3 sm:grid-cols-3">
+        {['Documentación técnica completa', 'Presentación y seguimiento ante el G.C.B.A.', 'Ascensores y montacargas'].map((t) => (
+          <li class="flex items-start gap-3 rounded-2xl border border-white/20 bg-white/[0.07] p-4 text-[15px] leading-snug text-white/95">
+            <span class="grid size-6 shrink-0 place-items-center rounded-full bg-amber-soft text-bp-900"><Check size={14} stroke-width={2.5} /></span>
+            {t}
+          </li>
+        ))}
       </ul>
 
-      <!-- Evite multas -->
-      <aside
-        class="mt-8 flex flex-col gap-5 rounded-2xl border border-amber/30 bg-gradient-to-r from-amber/[0.12] to-amber/[0.02] p-6 sm:flex-row sm:items-center sm:p-7"
-        data-reveal
-      >
-        <span class="grid size-12 shrink-0 place-items-center rounded-full bg-amber text-ink">
-          <TriangleAlert size={22} stroke-width={2} />
-        </span>
-        <div class="flex-1">
-          <p class="font-display text-xl font-semibold text-white">Evite multas y clausuras</p>
-          <p class="mt-1 text-[15px] leading-relaxed text-steel-2">
-            Mantener la documentación de los ascensores al día es una obligación del edificio. Consúltenos y revisamos su situación.
-          </p>
-        </div>
-        <a href="#contacto" class="btn-primary shrink-0 !px-5">
-          Consultar <ArrowRight size={16} />
+      <div class="mt-8 flex flex-col gap-3 border-t border-white/20 pt-7 sm:flex-row sm:items-center sm:justify-between">
+        <p class="text-sm text-white/70">Le decimos qué documentación necesita y nos ocupamos del resto.</p>
+        <a href="#contacto" data-service={habilitacion.service} class="btn-white shrink-0">
+          Solicitar habilitación <ArrowRight size={16} />
         </a>
-      </aside>
+      </div>
     </div>
-  </div>
-</section>
+  </article>
+
+  <!-- Trámites más solicitados -->
+  <ul class="mt-4 grid gap-4 sm:grid-cols-2" data-reveal-group>
+    {
+      paperwork.map((it, i) => (
+        <li class="card card-hover group flex flex-col p-7" data-reveal>
+          <div class="flex items-start justify-between">
+            <span class="blueprint grid size-14 place-items-center rounded-2xl text-white shadow-[0_14px_30px_-14px_rgb(23_78_138/0.8)]">
+              <Icon name={it.icon} size={26} />
+            </span>
+            <span class="font-display text-sm font-semibold text-bp-300">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 class="mt-6 font-display text-xl leading-snug font-semibold text-ink">{it.title}</h3>
+          <p class="mt-2 flex-1 text-[15px] leading-relaxed text-body">{it.text}</p>
+          <a
+            href="#contacto"
+            data-service={it.service}
+            class="mt-6 inline-flex items-center gap-2 self-start rounded-full bg-bp-100 px-4 py-2 text-sm font-semibold text-bp-700 transition group-hover:bg-ink group-hover:text-white"
+          >
+            Solicitar <ArrowRight size={15} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Oblea QR -->
+  <article class="card mt-4 p-7 sm:p-9" data-reveal>
+    <div class="pointer-events-none absolute -top-28 -right-20 size-72 rounded-full bg-bp-100 blur-3xl"></div>
+    <div class="relative flex flex-col gap-7 sm:flex-row sm:items-center">
+      <div class="blueprint grid size-24 shrink-0 place-items-center rounded-2xl text-white shadow-[0_16px_40px_-16px_rgb(23_78_138/0.8)]">
+        <QrCode size={46} stroke-width={1.5} />
+      </div>
+      <div>
+        <p class="font-display text-xs font-semibold tracking-[0.2em] text-bp-600 uppercase">Resolución N.º 430</p>
+        <h3 class="mt-2 font-display text-2xl font-semibold text-ink sm:text-3xl">Obleas Código QR</h3>
+        <p class="mt-3 leading-relaxed text-body">Gestionamos la oblea obligatoria para cada instalación del edificio:</p>
+        <ul class="mt-4 flex flex-wrap gap-2 text-sm">
+          {qrInstallations.map((t) => <li class="rounded-full border border-bp-200 bg-bp-50 px-3.5 py-1.5 font-medium text-bp-700">{t}</li>)}
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  <!-- Evite multas -->
+  <aside
+    class="mt-8 flex flex-col gap-5 rounded-3xl border border-amber/40 bg-[#fff6e8] p-6 sm:flex-row sm:items-center sm:p-7"
+    data-reveal
+  >
+    <span class="grid size-12 shrink-0 place-items-center rounded-full bg-amber text-ink">
+      <TriangleAlert size={22} stroke-width={2} />
+    </span>
+    <div class="flex-1">
+      <p class="font-display text-xl font-semibold text-ink">Evite multas y clausuras</p>
+      <p class="mt-1 text-[15px] leading-relaxed text-body">
+        Mantener la documentación de las instalaciones al día es una obligación del edificio. Consúltenos y revisamos su situación.
+      </p>
+    </div>
+    <a href="#contacto" class="btn-primary shrink-0 !px-5">Consultar <ArrowRight size={16} /></a>
+  </aside>
+</Section>

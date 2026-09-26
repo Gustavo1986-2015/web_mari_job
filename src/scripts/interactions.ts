@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const HEADER_OFFSET = -72;
+const HEADER_OFFSET = -84;
 
 // Scroll suave sincronizado con GSAP.
 let lenis: Lenis | null = null;
@@ -69,15 +69,6 @@ if (!reduced) {
     });
   });
 }
-
-// Brillo de las tarjetas siguiendo el puntero.
-document.querySelectorAll<HTMLElement>('.card-glow').forEach((card) => {
-  card.addEventListener('pointermove', (e) => {
-    const r = card.getBoundingClientRect();
-    card.style.setProperty('--mx', `${e.clientX - r.left}px`);
-    card.style.setProperty('--my', `${e.clientY - r.top}px`);
-  });
-});
 
 // Recalcular posiciones cuando cargan las fuentes.
 document.fonts?.ready.then(() => ScrollTrigger.refresh());

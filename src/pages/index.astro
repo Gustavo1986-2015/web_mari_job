@@ -1,7 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import FloorIndicator from '../components/FloorIndicator.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import Footer from '../components/Footer.astro';
 import Hero from '../components/sections/Hero.astro';
@@ -9,30 +7,18 @@ import Servicios from '../components/sections/Servicios.astro';
 import Gestoria from '../components/sections/Gestoria.astro';
 import Nosotros from '../components/sections/Nosotros.astro';
 import Contacto from '../components/sections/Contacto.astro';
-import ElevatorScene from '../three/ElevatorScene.tsx';
 ---
 
 <Layout>
-  <!-- Escena 3D fija detrás del contenido -->
-  <div class="fixed inset-0 z-0">
-    <ElevatorScene client:only="react" />
-  </div>
-  <!-- Velos para asegurar la lectura del texto sobre la escena -->
-  <div class="pointer-events-none fixed inset-0 z-0 bg-ink/60 lg:bg-transparent lg:bg-gradient-to-r lg:from-ink/95 lg:via-ink/60 lg:via-45% lg:to-transparent lg:to-70%"></div>
-  <div class="pointer-events-none fixed inset-x-0 bottom-0 z-0 h-40 bg-gradient-to-t from-ink to-transparent"></div>
-
-  <Header />
-  <FloorIndicator />
-
-  <main class="relative z-10">
-    <Hero />
-    <Servicios />
+  <!-- La portada incluye el header y la lámina del plano con el ascensor 3D -->
+  <Hero />
+  <main class="lg:pr-[calc(var(--panel-w)+12px)]">
     <Gestoria />
+    <Servicios />
     <Nosotros />
     <Contacto />
   </main>
-
-  <div class="relative z-10"><Footer /></div>
+  <Footer />
   <WhatsAppButton />
 </Layout>
 

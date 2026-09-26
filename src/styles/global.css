@@ -6,27 +6,38 @@
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk Variable', 'Inter Variable', ui-sans-serif, sans-serif;
 
-  --color-ink: #07090d;
-  --color-night: #0b0f15;
-  --color-panel: #111822;
-  --color-panel-2: #16202c;
-  --color-line: rgb(255 255 255 / 0.08);
-  --color-steel: #d5dbe3;
-  --color-steel-2: #a9b4c2;
-  --color-muted: #8793a4;
+  /* Azules de plano */
+  --color-bp-950: #071d38;
+  --color-bp-900: #0a2647;
+  --color-bp-800: #0f3a68;
+  --color-bp-700: #174e8a;
+  --color-bp-600: #1f62a8;
+  --color-bp-500: #2f7dd1;
+  --color-bp-300: #8fbbea;
+  --color-bp-200: #bcd6f3;
+  --color-bp-100: #e3eefb;
+  --color-bp-50: #f2f7fd;
+
+  /* Neutros */
+  --color-page: #eef3f9;
+  --color-ink: #0b2545;
+  --color-body: #3d4f66;
+  --color-muted: #687a91;
+  --color-line: #d7e1ed;
+
   --color-amber: #f2a93b;
-  --color-amber-soft: #f7c77c;
+  --color-amber-soft: #ffc56b;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
   html {
-    background: var(--color-ink);
-    color: var(--color-steel);
-    color-scheme: dark;
+    background: var(--color-page);
+    color: var(--color-body);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    --panel-w: min(42vw, 680px);
   }
   html.lenis,
   html.lenis body {
@@ -37,65 +48,86 @@
   }
   body {
     font-family: var(--font-sans);
-    background: var(--color-ink);
+    background: var(--color-page);
     overflow-x: clip;
   }
   ::selection {
-    background: var(--color-amber);
-    color: var(--color-ink);
+    background: var(--color-bp-500);
+    color: white;
   }
   :focus-visible {
-    outline: 2px solid var(--color-amber);
+    outline: 2px solid var(--color-bp-500);
     outline-offset: 3px;
     border-radius: 6px;
   }
 }
 
+/* Papel de plano: azul con grilla fina y grilla mayor. `fixed` alinea la grilla
+   entre la portada y el panel lateral para que se vean como una sola lámina. */
+@utility blueprint {
+  background-color: var(--color-bp-700);
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.11) 1px, transparent 1px),
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    radial-gradient(ellipse 70% 60% at 75% 25%, rgb(76 145 220 / 0.55), transparent 70%),
+    linear-gradient(180deg, #113c6d 0%, #18528f 55%, #1f5f9f 100%);
+  background-size:
+    120px 120px,
+    120px 120px,
+    24px 24px,
+    24px 24px,
+    100% 100%,
+    100% 100%;
+  background-attachment: fixed;
+}
+
+/* Marco interior de lámina */
+@utility sheet-frame {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: 18px;
+    pointer-events: none;
+  }
+}
+
 @utility eyebrow {
-  @apply inline-flex items-center gap-3 font-display text-xs font-medium tracking-[0.28em] text-amber uppercase;
+  @apply inline-flex items-center gap-3 font-display text-xs font-semibold tracking-[0.24em] text-bp-600 uppercase;
   &::before {
     content: '';
-    @apply h-px w-8 bg-amber/70;
+    @apply h-px w-8 bg-current opacity-60;
   }
 }
 @utility h-display {
-  @apply font-display font-semibold tracking-tight text-balance text-white;
+  @apply font-display font-semibold tracking-tight text-balance text-ink;
 }
 @utility btn {
   @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 ease-out-expo;
 }
-@utility btn-primary {
-  @apply btn bg-amber text-ink shadow-[0_0_0_1px_rgb(242_169_59/0.4),0_10px_40px_-10px_rgb(242_169_59/0.6)] hover:-translate-y-0.5 hover:bg-amber-soft;
+@utility btn-white {
+  @apply btn bg-white text-ink shadow-[0_10px_30px_-10px_rgb(7_29_56/0.5)] hover:-translate-y-0.5 hover:bg-bp-50;
 }
-@utility btn-ghost {
-  @apply btn border border-white/15 bg-white/[0.03] text-steel backdrop-blur hover:border-white/30 hover:bg-white/[0.07];
+@utility btn-outline-white {
+  @apply btn border border-white/35 bg-white/5 text-white backdrop-blur hover:border-white/60 hover:bg-white/10;
+}
+@utility btn-primary {
+  @apply btn bg-ink text-white shadow-[0_10px_30px_-12px_rgb(11_37_69/0.6)] hover:-translate-y-0.5 hover:bg-bp-800;
 }
 @utility card {
-  @apply relative overflow-hidden rounded-2xl border border-line bg-panel/70 backdrop-blur-md;
+  @apply relative overflow-hidden rounded-3xl border border-line bg-white shadow-[0_1px_2px_rgb(11_37_69/0.04),0_12px_32px_-18px_rgb(11_37_69/0.18)];
 }
-/* Brillo que sigue al puntero en las tarjetas (ver scripts/interactions.ts) */
-@utility card-glow {
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(242 169 59 / 0.1), transparent 45%);
-    opacity: 0;
-    transition: opacity 0.4s;
-    pointer-events: none;
-  }
-  &:hover::before {
-    opacity: 1;
-  }
+@utility card-hover {
+  @apply transition duration-500 ease-out-expo hover:-translate-y-1 hover:border-bp-200 hover:shadow-[0_1px_2px_rgb(11_37_69/0.04),0_24px_48px_-20px_rgb(11_37_69/0.28)];
+}
+@utility icon-tile {
+  @apply grid shrink-0 place-items-center rounded-2xl bg-bp-100 text-bp-600;
 }
 @utility field {
-  @apply w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3.5 text-[15px] text-white placeholder:text-muted/70 transition outline-none focus:border-amber/70 focus:bg-white/[0.06] focus:ring-4 focus:ring-amber/10;
-}
-@utility brushed {
-  background:
-    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.018) 0 1px, transparent 1px 3px),
-    linear-gradient(180deg, #1a2330, #111822);
+  @apply w-full rounded-xl border border-line bg-bp-50 px-4 py-3.5 text-[15px] text-ink placeholder:text-muted/70 transition outline-none focus:border-bp-500 focus:bg-white focus:ring-4 focus:ring-bp-500/15;
 }
 
 /* Estado inicial de los elementos que se revelan con scroll (solo si JS está activo) */

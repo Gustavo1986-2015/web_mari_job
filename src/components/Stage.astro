@@ -1,0 +1,143 @@
+---
+// Lámina del plano con el ascensor 3D. En escritorio es un panel fijo a la derecha
+// que acompaña todo el recorrido; en celular vive al pie de la portada.
+import ElevatorScene from '../three/ElevatorScene.tsx';
+import { Bell, BellOff } from '@lucide/astro';
+import { site } from '../config/site';
+
+const floors = [
+  { label: 'PB', name: 'Inicio', href: '#inicio' },
+  { label: '1', name: 'Gestoría', href: '#gestoria' },
+  { label: '2', name: 'Servicios', href: '#servicios' },
+  { label: '3', name: 'Nosotros', href: '#nosotros' },
+  { label: '4', name: 'Contacto', href: '#contacto' },
+];
+---
+
+<div
+  id="stage"
+  class="absolute inset-x-0 bottom-0 h-[50svh] lg:fixed lg:inset-auto lg:top-3 lg:right-3 lg:bottom-3 lg:z-20 lg:h-auto lg:w-(--panel-w) lg:overflow-hidden lg:rounded-[28px] lg:blueprint lg:sheet-frame"
+>
+  <!-- El dibujo se desvanece arriba para que el menú de la portada se lea limpio -->
+  <div class="absolute inset-0 lg:[mask-image:linear-gradient(to_bottom,transparent_0,#000_170px)]">
+    <ElevatorScene client:only="react" />
+  </div>
+
+  <!-- Rótulos de lámina -->
+  <p class="pointer-events-none absolute bottom-8 left-8 hidden font-display text-[11px] leading-5 tracking-[0.22em] text-white/70 lg:block">
+    CORTE A–A <span class="mx-2 text-white/30">|</span> ESC. 1:50<br /><span class="text-white/45">ASC-01 · COTAS EN METROS</span>
+  </p>
+
+  <!-- Cajetín: rótulo del plano y botonera de pisos -->
+  <div
+    class="absolute right-7 bottom-7 hidden w-[290px] border border-white/45 bg-bp-900/35 font-display text-white backdrop-blur-[2px] lg:block"
+    aria-label="Indicador de piso"
+  >
+    <div class="flex items-center justify-between border-b border-white/35 py-1 pr-1 pl-3">
+      <p class="text-[11px] font-semibold tracking-[0.18em]">{site.name.toUpperCase()}</p>
+      <button
+        type="button"
+        data-sound-toggle
+        aria-pressed="true"
+        title="Campanilla de llegada"
+        class="grid size-8 place-items-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
+      >
+        <Bell size={15} data-sound-on />
+        <BellOff size={15} data-sound-off class="hidden" />
+        <span class="sr-only">Activar o silenciar la campanilla</span>
+      </button>
+    </div>
+    <div class="grid grid-cols-[1.4fr_1fr] border-b border-white/35 text-[10px] tracking-[0.14em]">
+      <div class="border-r border-white/35 px-3 py-2">
+        <span class="block text-white/55">PLANO</span>
+        <span class="mt-0.5 block text-xs tracking-normal">Ascensor · Corte</span>
+      </div>
+      <div class="px-3 py-2">
+        <span class="block text-white/55">NIVEL</span>
+        <span class="mt-0.5 flex items-center gap-1.5 text-xs tracking-normal text-amber-soft">
+          <span data-floor-arrow class="text-[8px] opacity-0 transition-opacity">▲</span>
+          <span data-floor-level>±0.00</span>
+        </span>
+      </div>
+    </div>
+    <div class="flex items-center justify-between px-2 py-2">
+      <ul class="flex gap-1">
+        {
+          floors.map((f, i) => (
+            <li>
+              <a
+                href={f.href}
+                data-floor-btn={i}
+                title={f.name}
+                aria-label={`Ir a ${f.name}`}
+                class="grid size-8 place-items-center rounded-full border border-white/35 text-[11px] font-semibold text-white/80 transition hover:border-white hover:text-white data-[active]:border-amber-soft data-[active]:bg-amber-soft data-[active]:text-bp-900"
+              >
+                {f.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <span class="pr-1 text-[10px] tracking-[0.14em] text-white/60">LÁM. <span data-floor-sheet>1</span>/5</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { FLOOR_LABELS, floorAt, watchFloors } from '../scripts/floors';
+  import { isSoundOn, setSound } from '../scripts/chime';
+
+  const soundBtn = document.querySelector<HTMLButtonElement>('[data-sound-toggle]');
+  const paintSound = () => {
+    const on = isSoundOn();
+    soundBtn?.setAttribute('aria-pressed', String(on));
+    soundBtn?.querySelector('[data-sound-on]')?.classList.toggle('hidden', !on);
+    soundBtn?.querySelector('[data-sound-off]')?.classList.toggle('hidden', on);
+  };
+  paintSound();
+  soundBtn?.addEventListener('click', () => {
+    setSound(!isSoundOn());
+    paintSound();
+  });
+
+  const FLOOR_H = 4.2;
+  const level = document.querySelector<HTMLElement>('[data-floor-level]');
+  const sheet = document.querySelector<HTMLElement>('[data-floor-sheet]');
+  const arrow = document.querySelector<HTMLElement>('[data-floor-arrow]');
+  const buttons = document.querySelectorAll<HTMLElement>('[data-floor-btn]');
+
+  watchFloors();
+  let last = -1;
+  let lastF = 0;
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const f = floorAt(window.scrollY);
+    const current = Math.min(FLOOR_LABELS.length - 1, Math.round(f));
+    const moving = Math.abs(f - current) > 0.04;
+    if (arrow) {
+      arrow.textContent = f > lastF ? '▲' : '▼';
+      arrow.style.opacity = moving ? '1' : '0';
+    }
+    lastF = f;
+    if (current !== last) {
+      last = current;
+      if (level) level.textContent = current === 0 ? '±0.00' : `+${(current * FLOOR_H).toFixed(2)}`;
+      if (sheet) sheet.textContent = String(current + 1);
+      buttons.forEach((b) => b.toggleAttribute('data-active', Number(b.dataset.floorBtn) === current));
+    }
+  };
+  update();
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  window.addEventListener('scrollend', () => requestAnimationFrame(update));
+</script>

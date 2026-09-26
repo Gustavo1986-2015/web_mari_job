@@ -1,64 +1,29 @@
 ---
-import { BadgeCheck, Cpu, FileText, ClipboardList, SearchCheck, Gavel } from '@lucide/astro';
+import Section from '../Section.astro';
 import SectionHeading from '../SectionHeading.astro';
-
-const services = [
-  {
-    icon: BadgeCheck,
-    title: 'Habilitaciones',
-    text: 'Ascensores, montacargas, montavehículos y escaleras mecánicas.',
-  },
-  {
-    icon: Cpu,
-    title: 'Rehabilitaciones',
-    text: 'Por cambio de controles electromecánicos a electrónicos.',
-  },
-  {
-    icon: FileText,
-    title: 'Informes técnicos',
-    text: 'Para la adecuación de ascensores a las normativas vigentes.',
-  },
-  {
-    icon: ClipboardList,
-    title: 'Pliegos técnicos',
-    text: 'Confección de pliegos de características técnicas para la ejecución de modernizaciones.',
-  },
-  {
-    icon: SearchCheck,
-    title: 'Auditorías técnicas',
-    text: 'Evaluación del estado de seguridad y funcionamiento de la instalación.',
-  },
-  {
-    icon: Gavel,
-    title: 'Pericias judiciales',
-    text: 'Informes periciales sobre instalaciones de elevación.',
-  },
-];
+import Icon from '../Icon.astro';
+import { technicalServices } from '../../config/site';
 ---
 
-<section id="servicios" data-floor="1" class="relative scroll-mt-20 py-28 sm:py-36">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="max-w-[680px]">
-      <SectionHeading floor="1" eyebrow="Servicios técnicos" title="Ingeniería y documentación para cada etapa de su ascensor.">
-        Desde la habilitación inicial hasta la modernización, respaldamos técnicamente cada instalación.
-      </SectionHeading>
+<Section id="servicios" floor={2}>
+  <SectionHeading floor="2" eyebrow="Servicios técnicos" title="Ingeniería y documentación para cada etapa de su ascensor.">
+    Desde la adecuación normativa hasta la modernización, respaldamos técnicamente cada instalación.
+  </SectionHeading>
 
-      <ul class="mt-14 grid gap-4 sm:grid-cols-2" data-reveal-group>
-        {
-          services.map((s, i) => (
-            <li class="card card-glow group p-6 transition duration-500 hover:-translate-y-1 hover:border-white/15" data-reveal>
-              <div class="flex items-start justify-between">
-                <span class="grid size-12 place-items-center rounded-xl border border-white/10 bg-gradient-to-b from-white/10 to-white/[0.02] text-amber">
-                  <s.icon size={22} stroke-width={1.6} />
-                </span>
-                <span class="font-display text-xs text-muted/60">{String(i + 1).padStart(2, '0')}</span>
-              </div>
-              <h3 class="mt-6 font-display text-lg font-semibold text-white">{s.title}</h3>
-              <p class="mt-2 text-[15px] leading-relaxed text-steel-2">{s.text}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </div>
-</section>
+  <ul class="mt-14 grid gap-4 sm:grid-cols-2" data-reveal-group>
+    {
+      technicalServices.map((s, i) => (
+        <li class="card card-hover p-7" data-reveal>
+          <div class="flex items-start justify-between">
+            <span class="icon-tile size-12">
+              <Icon name={s.icon} />
+            </span>
+            <span class="font-display text-xs text-muted/70">{String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 class="mt-6 font-display text-lg font-semibold text-ink">{s.title}</h3>
+          <p class="mt-2 text-[15px] leading-relaxed text-body">{s.text}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

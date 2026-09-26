@@ -1,96 +1,134 @@
 ---
-import { Menu, X, Phone } from '@lucide/astro';
+import { Menu, X, Phone, ArrowRight } from '@lucide/astro';
 import { site } from '../config/site';
 
 const links = [
-  { href: '#servicios', label: 'Servicios' },
   { href: '#gestoria', label: 'Gestoría' },
+  { href: '#servicios', label: 'Servicios' },
   { href: '#nosotros', label: 'Nosotros' },
   { href: '#contacto', label: 'Contacto' },
 ];
 ---
 
-<header
-  id="site-header"
-  class="fixed inset-x-0 top-0 z-50 transition-[background,border-color,backdrop-filter] duration-500 border-b border-transparent data-[scrolled]:border-line data-[scrolled]:bg-ink/70 data-[scrolled]:backdrop-blur-xl"
->
-  <div class="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-5 sm:px-8">
-    <a href="#inicio" class="shrink-0" aria-label={`${site.name} — inicio`}>
-      <img src="/logo.svg" alt={site.name} width="205" height="38" class="h-8 w-auto sm:h-9" />
-    </a>
-
-    <nav class="hidden items-center gap-1 lg:flex" aria-label="Principal">
-      {
-        links.map((l) => (
-          <a
-            href={l.href}
-            class="rounded-full px-4 py-2 text-sm text-steel-2 transition hover:bg-white/5 hover:text-white"
-          >
-            {l.label}
-          </a>
-        ))
-      }
-    </nav>
-
-    <div class="flex items-center gap-2">
-      <span
-        class="flex h-11 min-w-12 items-center justify-center gap-1 rounded-full border border-white/10 bg-[#050608] px-3 font-display text-sm font-semibold text-amber [text-shadow:0_0_10px_rgb(242_169_59/0.6)] xl:hidden"
-        aria-hidden="true"
-      >
-        <span data-floor-arrow class="text-[9px] opacity-0 transition-opacity">▲</span>
-        <span data-floor-display>PB</span>
-      </span>
-      <a href={site.phone.href} class="hidden items-center gap-2 px-3 text-sm text-steel-2 transition hover:text-white xl:flex">
-        <Phone size={16} class="text-amber" />
-        {site.phone.display}
-      </a>
-      <a href="#contacto" class="btn-primary hidden !py-2.5 sm:inline-flex">Pedir cotización</a>
-      <button
-        id="menu-toggle"
-        type="button"
-        class="grid size-11 place-items-center rounded-full border border-white/10 text-steel lg:hidden"
-        aria-expanded="false"
-        aria-controls="mobile-menu"
-        aria-label="Abrir menú"
-      >
-        <Menu size={20} class="menu-open" />
-        <X size={20} class="menu-close hidden" />
-      </button>
-    </div>
-  </div>
-
-  <div id="mobile-menu" class="hidden border-t border-line bg-ink/95 backdrop-blur-xl lg:hidden">
-    <nav class="mx-auto flex max-w-7xl flex-col px-5 py-4" aria-label="Móvil">
-      {
-        links.map((l) => (
-          <a href={l.href} class="border-b border-line py-4 font-display text-lg text-white last:border-0">
-            {l.label}
-          </a>
-        ))
-      }
-      <a href="#contacto" class="btn-primary mt-4">Pedir cotización</a>
-    </nav>
+<!-- Header de portada: blanco sobre el plano azul -->
+<header class="relative z-30 mx-auto flex h-24 w-full items-center justify-between gap-6 px-5 sm:h-28 sm:px-10">
+  <a href="#inicio" class="shrink-0" aria-label={`${site.name} — inicio`}>
+    <img src="/logo-compacto.svg" alt={site.name} width="385" height="64" class="h-11 w-auto sm:h-16" />
+  </a>
+  <nav class="hidden items-center gap-1 xl:flex" aria-label="Principal">
+    {
+      links.map((l) => (
+        <a href={l.href} class="rounded-full px-5 py-2.5 text-lg font-medium text-white/90 transition hover:bg-white/10 hover:text-white">
+          {l.label}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="flex items-center gap-2">
+    <a href="#contacto" class="btn-white hidden !px-6 !py-3 !text-base sm:inline-flex">Pedir cotización</a>
+    <button
+      type="button"
+      data-menu-open
+      class="grid size-11 shrink-0 place-items-center rounded-full border border-white/25 text-white xl:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Abrir menú"
+    >
+      <Menu size={20} />
+    </button>
   </div>
 </header>
 
+<!-- Barra flotante: aparece al dejar la portada -->
+<div
+  id="float-nav"
+  class="fixed top-3 right-3 left-3 z-50 -translate-y-24 opacity-0 transition duration-500 ease-out-expo data-[show]:translate-y-0 data-[show]:opacity-100 lg:right-[calc(var(--panel-w)+24px)]"
+>
+  <div class="flex h-[72px] items-center justify-between gap-4 rounded-2xl border border-white/70 bg-white/80 px-4 shadow-[0_12px_40px_-18px_rgb(11_37_69/0.35)] backdrop-blur-xl sm:px-5">
+    <a href="#inicio" class="shrink-0" aria-label={`${site.name} — inicio`}>
+      <img src="/logo-compacto-claro.svg" alt={site.name} width="264" height="44" class="h-10 w-auto sm:h-11" />
+    </a>
+    <nav class="hidden items-center gap-0.5 min-[1400px]:flex" aria-label="Secciones">
+      {
+        links.map((l) => (
+          <a href={l.href} data-nav-link={l.href.slice(1)} class="rounded-full px-3.5 py-2 text-[17px] font-medium text-body transition hover:bg-bp-50 hover:text-ink data-[active]:bg-bp-100 data-[active]:text-bp-700">
+            {l.label}
+          </a>
+        ))
+      }
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="#contacto" class="btn-primary hidden !px-5 !py-2.5 sm:inline-flex min-[1400px]:!hidden">Cotizar <ArrowRight size={16} /></a>
+      <button
+        type="button"
+        data-menu-open
+        class="grid size-10 shrink-0 place-items-center rounded-full border border-line text-ink min-[1400px]:hidden"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Abrir menú"
+      >
+        <Menu size={19} />
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Menú móvil a pantalla completa -->
+<div id="mobile-menu" class="blueprint fixed inset-0 z-[60] hidden flex-col px-6 py-5" role="dialog" aria-modal="true" aria-label="Menú">
+  <div class="flex h-14 items-center justify-between">
+    <img src="/logo-compacto.svg" alt={site.name} width="264" height="44" class="h-11 w-auto" />
+    <button type="button" data-menu-close class="grid size-11 place-items-center rounded-full border border-white/25 text-white" aria-label="Cerrar menú">
+      <X size={20} />
+    </button>
+  </div>
+  <nav class="mt-10 flex flex-col" aria-label="Móvil">
+    {
+      links.map((l, i) => (
+        <a href={l.href} class="flex items-baseline gap-4 border-b border-white/15 py-5 font-display text-3xl font-semibold text-white">
+          <span class="text-sm text-white/50">{i + 1}</span>
+          {l.label}
+        </a>
+      ))
+    }
+  </nav>
+  <a href="#contacto" class="btn-white mt-auto">Pedir cotización</a>
+  <a href={site.phone.href} class="btn-outline-white mt-3"><Phone size={16} /> {site.phone.display}</a>
+</div>
+
 <script>
-  const header = document.getElementById('site-header')!;
-  const toggle = document.getElementById('menu-toggle')!;
+  const floatNav = document.getElementById('float-nav')!;
+  const hero = document.getElementById('inicio')!;
   const menu = document.getElementById('mobile-menu')!;
 
-  const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 24);
+  const onScroll = () => {
+    floatNav.toggleAttribute('data-show', window.scrollY > hero.offsetHeight - 120);
+  };
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
+  const openers = document.querySelectorAll<HTMLElement>('[data-menu-open]');
   const setOpen = (open: boolean) => {
     menu.classList.toggle('hidden', !open);
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-    toggle.querySelector('.menu-open')!.classList.toggle('hidden', open);
-    toggle.querySelector('.menu-close')!.classList.toggle('hidden', !open);
-    if (open) header.setAttribute('data-scrolled', '');
-    else onScroll();
+    menu.classList.toggle('flex', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    openers.forEach((b) => b.setAttribute('aria-expanded', String(open)));
+    if (open) menu.querySelector<HTMLElement>('[data-menu-close]')?.focus();
   };
-  toggle.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+  openers.forEach((b) => b.addEventListener('click', () => setOpen(true)));
+  menu.querySelector('[data-menu-close]')!.addEventListener('click', () => setOpen(false));
   menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+
+  // Resaltar la sección actual en la barra flotante.
+  const links = document.querySelectorAll<HTMLElement>('[data-nav-link]');
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting)
+          links.forEach((l) => l.toggleAttribute('data-active', l.dataset.navLink === e.target.id));
+      });
+    },
+    { rootMargin: '-45% 0px -50% 0px' },
+  );
+  document.querySelectorAll('section[id]').forEach((s) => io.observe(s));
 </script>
