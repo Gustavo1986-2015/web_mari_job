@@ -2,7 +2,7 @@
 // La cabina se queda quieta mientras se lee una sección y viaja en el tramo
 // final antes de que aparezca la siguiente. Lo usan la escena 3D y el indicador.
 
-export const FLOOR_LABELS = ['PB', '1', '2', '3', '4'];
+export const FLOOR_LABELS = ['PB', '1', '2', '3', '4', '5'];
 
 let anchors: number[] = [];
 let vh = 1;

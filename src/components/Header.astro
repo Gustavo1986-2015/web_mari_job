@@ -6,6 +6,7 @@ const links = [
   { href: '#gestoria', label: 'Gestoría' },
   { href: '#servicios', label: 'Servicios' },
   { href: '#nosotros', label: 'Nosotros' },
+  { href: '#informacion', label: 'Información' },
   { href: '#contacto', label: 'Contacto' },
 ];
 ---
@@ -18,7 +19,7 @@ const links = [
   <nav class="hidden items-center gap-1 xl:flex" aria-label="Principal">
     {
       links.map((l) => (
-        <a href={l.href} class="rounded-full px-5 py-2.5 text-lg font-medium text-white/90 transition hover:bg-white/10 hover:text-white">
+        <a href={l.href} class="rounded-full px-3.5 py-2.5 text-lg font-medium text-white/90 transition hover:bg-white/10 hover:text-white 2xl:px-5">
           {l.label}
         </a>
       ))
@@ -51,7 +52,7 @@ const links = [
     <nav class="hidden items-center gap-0.5 min-[1400px]:flex" aria-label="Secciones">
       {
         links.map((l) => (
-          <a href={l.href} data-nav-link={l.href.slice(1)} class="rounded-full px-3.5 py-2 text-[17px] font-medium text-body transition hover:bg-bp-50 hover:text-ink data-[active]:bg-bp-100 data-[active]:text-bp-700">
+          <a href={l.href} data-nav-link={l.href.slice(1)} class="rounded-full px-3 py-2 text-[16px] font-medium text-body transition hover:bg-bp-50 hover:text-ink data-[active]:bg-bp-100 data-[active]:text-bp-700">
             {l.label}
           </a>
         ))

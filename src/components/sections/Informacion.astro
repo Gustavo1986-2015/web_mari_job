@@ -1,0 +1,181 @@
+---
+import { Scale, ShieldCheck, DoorOpen, ArrowUpDown, BellRing, ChevronDown, ArrowRight, Check } from '@lucide/astro';
+import Section from '../Section.astro';
+import SectionHeading from '../SectionHeading.astro';
+
+const keyFacts = [
+  { value: 'Marzo 2025', label: 'Venció la prórroga' },
+  { value: '1,60 m', label: 'Altura mínima de recubrimiento' },
+  { value: 'Cada 30 días', label: 'Se renuevan las multas' },
+];
+
+const consequences = [
+  {
+    title: 'Multas',
+    text: 'Se aplican y se renuevan automáticamente cada 30 días hasta que se realice la adecuación.',
+  },
+  {
+    title: 'Clausura',
+    text: 'Si la seguridad está comprometida, la inspección puede clausurar el ascensor hasta que se corrijan las deficiencias.',
+  },
+  {
+    title: 'Responsabilidad legal',
+    text: 'Ante un accidente vinculado al incumplimiento, los propietarios pueden enfrentar acciones por negligencia.',
+  },
+];
+
+const safety = [
+  {
+    icon: DoorOpen,
+    title: 'Antes de subir',
+    tips: [
+      'Verifique que la cabina esté en el piso antes de entrar.',
+      'No fuerce nunca la apertura de las puertas.',
+      'Deje salir a quienes están dentro antes de ingresar.',
+    ],
+  },
+  {
+    icon: ArrowUpDown,
+    title: 'Durante el viaje',
+    tips: [
+      'No trabe las puertas con objetos ni con el cuerpo: si necesita mantenerlas abiertas, use el botón de apertura.',
+      'Respete la capacidad máxima indicada en la placa; el exceso de peso puede provocar fallas.',
+      'Evite saltar o hacer movimientos bruscos dentro de la cabina.',
+      'Ante un incendio o un sismo, no use el ascensor: baje por la escalera.',
+    ],
+  },
+  {
+    icon: BellRing,
+    title: 'Si el ascensor se detiene',
+    tips: [
+      'Mantenga la calma y no intente salir por sus propios medios.',
+      'Presione el botón de alarma para dar aviso.',
+      'Si la cabina tiene intercomunicador, úselo para comunicarse con el servicio técnico.',
+    ],
+  },
+];
+---
+
+<Section id="informacion" floor={4}>
+  <SectionHeading floor="4" eyebrow="Información de interés" title="Normativa y consejos para su edificio.">
+    Novedades normativas y recomendaciones para que su ascensor sea seguro y esté en regla.
+  </SectionHeading>
+
+  <!-- Artículo 1: puertas tijera -->
+  <article class="card mt-12 p-7 sm:p-9" data-reveal>
+    <div class="flex items-center gap-3">
+      <span class="icon-tile size-11 rounded-xl"><Scale size={20} /></span>
+      <p class="font-display text-xs font-semibold tracking-[0.2em] text-bp-600 uppercase">Normativa · CABA</p>
+    </div>
+    <h3 class="mt-5 font-display text-2xl leading-tight font-semibold text-ink sm:text-3xl">
+      Puertas tijera: el plazo para reemplazarlas ya venció
+    </h3>
+    <p class="mt-4 text-[17px] leading-relaxed text-body">
+      Desde marzo de 2025 ya no rige la prórroga para cambiar las puertas tijera de los ascensores en la Ciudad de
+      Buenos Aires. El objetivo es claro: más seguridad para quienes viajan y ascensores accesibles para todos.
+    </p>
+
+    <dl class="mt-7 grid grid-cols-3 gap-3">
+      {
+        keyFacts.map((f) => (
+          <div class="flex flex-col-reverse rounded-2xl bg-bp-50 p-4">
+            <dt class="mt-1 text-xs leading-snug text-muted sm:text-sm">{f.label}</dt>
+            <dd class="font-display text-lg font-semibold text-ink sm:text-2xl">{f.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <details class="group mt-7 border-t border-line pt-6">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display font-semibold text-bp-700 [&::-webkit-details-marker]:hidden">
+        <span class="group-open:hidden">Leer el artículo completo</span>
+        <span class="hidden group-open:inline">Ocultar</span>
+        <ChevronDown size={20} class="transition-transform group-open:rotate-180" />
+      </summary>
+
+      <div class="mt-6 space-y-5 text-[16px] leading-relaxed text-body">
+        <h4 class="font-display text-lg font-semibold text-ink">Qué establece la normativa</h4>
+        <p>
+          La Ordenanza N.º 46.275, de 1992, modificó el artículo 8.10.2.12 del Código de la Edificación y fijó requisitos
+          de seguridad para las puertas de cabina y de rellano. Desde entonces, los ascensores con puertas tipo tijera
+          deben reemplazarlas o recubrirlas con materiales no ígneos hasta una altura mínima de 1,60 m.
+        </p>
+        <p>
+          En 1996, el Decreto N.º 438 reglamentó la ordenanza y definió las condiciones técnicas de esos recubrimientos,
+          como su resistencia mecánica y sus dimensiones.
+        </p>
+
+        <h4 class="pt-2 font-display text-lg font-semibold text-ink">Qué ocurre si no se cumple</h4>
+        <ul class="space-y-3">
+          {
+            consequences.map((c) => (
+              <li class="flex gap-3">
+                <span class="mt-1 grid size-5 shrink-0 place-items-center rounded-full bg-amber text-ink">
+                  <Check size={12} stroke-width={3} />
+                </span>
+                <span>
+                  <strong class="font-semibold text-ink">{c.title}:</strong> {c.text}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h4 class="pt-2 font-display text-lg font-semibold text-ink">Por qué conviene actuar ahora</h4>
+        <p>
+          Las puertas tijera son un riesgo concreto, sobre todo para chicos y personas con movilidad reducida: pueden
+          provocar atrapamientos y caídas. Además, suelen dificultar el acceso en silla de ruedas, lo que contradice el
+          principio de accesibilidad universal.
+        </p>
+        <p>
+          Adecuar el ascensor implica una inversión, pero protege a residentes y visitantes y evita sanciones económicas
+          y legales. Es una responsabilidad compartida entre consorcios, propietarios y administradores.
+        </p>
+      </div>
+    </details>
+
+    <div class="mt-7 flex flex-col gap-4 rounded-2xl bg-ink p-5 text-white sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <p class="text-[15px] leading-snug">¿Su edificio todavía tiene puertas tijera? Le indicamos cómo adecuarlo.</p>
+      <a href="#contacto" data-service="Informe técnico / Auditoría" class="btn-white shrink-0 !px-5 !py-3">
+        Consultar <ArrowRight size={16} />
+      </a>
+    </div>
+  </article>
+
+  <!-- Artículo 2: uso seguro -->
+  <article class="blueprint sheet-frame relative mt-4 overflow-hidden rounded-3xl p-7 text-white sm:p-9" data-reveal>
+    <div class="relative">
+      <div class="flex items-center gap-3">
+        <span class="grid size-11 place-items-center rounded-xl bg-white/15 ring-1 ring-white/25"><ShieldCheck size={20} /></span>
+        <p class="font-display text-xs font-semibold tracking-[0.2em] text-white/80 uppercase">Seguridad</p>
+      </div>
+      <h3 class="mt-5 font-display text-2xl leading-tight font-semibold sm:text-3xl">Uso seguro del ascensor</h3>
+      <p class="mt-3 max-w-2xl text-[17px] leading-relaxed text-white/85">
+        Algunos hábitos simples hacen que cada viaje sea más seguro. Compártalos con los vecinos de su edificio.
+      </p>
+
+      <div class="mt-8 grid gap-3 md:grid-cols-3">
+        {
+          safety.map((g) => (
+            <section class="rounded-2xl border border-white/20 bg-white/[0.07] p-5">
+              <div class="flex items-center gap-2.5">
+                <g.icon size={18} class="text-amber-soft" />
+                <h4 class="font-display font-semibold">{g.title}</h4>
+              </div>
+              <ul class="mt-4 space-y-3 text-[14.5px] leading-snug text-white/90">
+                {g.tips.map((t) => (
+                  <li class="flex gap-2.5">
+                    <span class="mt-[7px] size-1.5 shrink-0 rounded-full bg-amber-soft" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
+      </div>
+
+      <p class="mt-7 font-display text-lg font-semibold">La seguridad es tarea de todos.</p>
+    </div>
+  </article>
+</Section>

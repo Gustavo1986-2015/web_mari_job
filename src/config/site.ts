@@ -33,10 +33,24 @@ export const form = {
   subject: 'Nueva solicitud de cotización — web Soregaroli',
 };
 
-// Servicios técnicos (piso 2).
+
+// Servicios técnicos (piso 2), en el orden indicado por el estudio.
 export const technicalServices = [
-  { icon: 'cpu', title: 'Rehabilitaciones', text: 'Por cambio de controles electromecánicos a electrónicos.' },
-  { icon: 'file-text', title: 'Informes técnicos', text: 'Para la adecuación de ascensores a las normativas vigentes.' },
+  {
+    icon: 'badge-check',
+    title: 'Habilitación de ascensores, montacargas, montavehículos y escaleras mecánicas',
+    text: 'Documentación técnica y gestión completa para habilitar cada tipo de instalación.',
+  },
+  {
+    icon: 'cpu',
+    title: 'Rehabilitación',
+    text: 'Por cambio de controles electromecánicos a electrónicos.',
+  },
+  {
+    icon: 'file-text',
+    title: 'Informes técnicos',
+    text: 'Para la adecuación de ascensores a las normativas vigentes.',
+  },
   {
     icon: 'clipboard-list',
     title: 'Pliegos técnicos',
@@ -50,29 +64,23 @@ export const technicalServices = [
 ] as const;
 
 // Oblea Código QR: instalaciones alcanzadas.
-export const qrInstallations = ['Ascensores', 'Instalaciones térmicas', 'Incendio', 'Campanas extractoras'] as const;
+export const qrInstallations = ['Ascensores', 'Térmicas', 'Incendio', 'Campanas'] as const;
 
 // Trámite destacado de Gestoría.
 export const habilitacion = {
   icon: 'badge-check',
   title: 'Habilitación de ascensores y montacargas',
-  text: 'Gestionamos la habilitación completa de la instalación ante el G.C.B.A., desde la documentación técnica hasta la aprobación final.',
+  text: 'Gestionamos la habilitación completa de la instalación ante el G.C.B.A., desde la recepción y organización de la documentación hasta la adecuación, conforme a las ordenanzas vigentes.',
   service: 'Habilitación de ascensores y montacargas',
 } as const;
 
-// Gestoría (piso 1): los trámites más solicitados (~80% del trabajo del estudio).
+// Gestoría (piso 1): los trámites más solicitados (~80% del trabajo del estudio), en el orden indicado.
 export const paperwork = [
   {
-    icon: 'id-card',
-    title: 'Obtención y renovación del Permiso de Conservador',
-    text: 'Tramitamos el permiso y su renovación en término, con toda la documentación requerida.',
-    service: 'Obtención / Renovación de Permiso de Conservador',
-  },
-  {
-    icon: 'book-open-check',
-    title: 'Libro Digital de Inspección',
-    text: 'Gestionamos el alta y el seguimiento del libro digital de la instalación.',
-    service: 'Libro Digital de Inspección',
+    icon: 'drafting-compass',
+    title: 'Consulta y obtención de Planos de Habilitación y Planchetas',
+    text: 'De elevadores, instalaciones contra incendio, térmicas y sanitarias.',
+    service: 'Planos de Habilitación / Planchetas',
   },
   {
     icon: 'arrow-left-right',
@@ -81,14 +89,21 @@ export const paperwork = [
     service: 'Transferencia de Titularidad de Habilitación',
   },
   {
-    icon: 'file-stack',
-    title: 'Duplicado de Expediente de Habilitación',
-    text: 'Recuperamos la documentación de habilitación cuando el expediente original no está disponible.',
-    service: 'Duplicado de Expediente de Habilitación',
+    icon: 'id-card',
+    title: 'Alta y renovación del Permiso de Conservador',
+    text: 'Tramitamos el alta del permiso y su renovación en término, con toda la documentación requerida.',
+    service: 'Alta / Renovación de Permiso de Conservador',
+  },
+  {
+    icon: 'qr-code',
+    title: 'Obleas Código QR',
+    text: 'Resolución N.º 430: la oblea obligatoria para cada instalación del edificio.',
+    service: 'Oblea Código QR (Res. N.º 430)',
+    tags: qrInstallations,
   },
   {
     icon: 'house',
-    title: 'Informe de Dominio del inmueble',
+    title: 'Obtención de Informe de Dominio del inmueble',
     text: 'Obtenemos el informe de dominio que respalda los trámites del edificio.',
     service: 'Informe de Dominio del inmueble',
   },
@@ -98,16 +113,28 @@ export const paperwork = [
     text: 'Resolvemos las observaciones y gestionamos el levantamiento para volver a habilitar la instalación.',
     service: 'Levantamiento de Clausura',
   },
+  {
+    icon: 'book-open-check',
+    title: 'Libro Digital de Inspección',
+    text: 'Gestionamos el alta y el seguimiento del libro digital de la instalación.',
+    service: 'Libro Digital de Inspección',
+  },
+  {
+    icon: 'file-stack',
+    title: 'Duplicado de Expediente de Habilitación',
+    text: 'Recuperamos la documentación de habilitación cuando el expediente original no está disponible.',
+    service: 'Duplicado de Expediente de Habilitación',
+  },
 ] as const;
 
-export const totalServices = technicalServices.length + paperwork.length + 2; // + habilitación y Oblea QR
+export const totalServices = technicalServices.length + paperwork.length;
 
 // Opciones del formulario.
 export const services = [
   habilitacion.service,
   ...paperwork.map((p) => p.service),
-  'Oblea Código QR (Res. N.º 430)',
   'Rehabilitación / Modernización',
   'Informe técnico / Auditoría',
+  'Pliegos técnicos',
   'Otro',
 ] as const;
