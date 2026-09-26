@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Soregaroli"><g>
+    
+    <rect x="4.5" y="4.5" width="55" height="55" rx="12" fill="none" stroke="#1C2735" stroke-width="3"/>
+    <path d="M32 11 L36.8 17.2 H27.2 Z" fill="#F2A93B"/>
+    <path d="M12.5 50.5 V20.5 H51.5 V50.5" fill="none" stroke="#1C2735" stroke-width="1.6" stroke-linejoin="round"/>
+    <rect x="16" y="23" width="14.4" height="27.5" rx="0.6" fill="#1C2735"/>
+    <rect x="33.6" y="23" width="14.4" height="27.5" rx="0.6" fill="#1C2735"/>
+    <rect x="30.4" y="23" width="3.2" height="27.5" fill="#F2A93B"/>
+    <path d="M30.4 50.5 H33.6 L42 55.5 H22 Z" fill="#F2A93B" opacity="0.45"/>
+    <rect x="10" y="50.5" width="44" height="1.6" rx="0.8" fill="#1C2735"/>
+  </g></svg>

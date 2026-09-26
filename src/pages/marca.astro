@@ -1,0 +1,93 @@
+---
+// Presentación de la identidad visual (no se indexa).
+import Layout from '../layouts/Layout.astro';
+
+const colors = [
+  { name: 'Tinta', hex: '#07090D', use: 'Fondo principal' },
+  { name: 'Panel', hex: '#111822', use: 'Superficies y tarjetas' },
+  { name: 'Acero', hex: '#D5DBE3', use: 'Logo y textos sobre oscuro' },
+  { name: 'Grafito', hex: '#1C2735', use: 'Logo sobre fondo claro' },
+  { name: 'Ámbar', hex: '#F2A93B', use: 'Acento: luz, acción, indicador' },
+  { name: 'Niebla', hex: '#8793A4', use: 'Textos secundarios' },
+];
+const files = [
+  'logo-horizontal-oscuro.svg',
+  'logo-horizontal-claro.svg',
+  'logo-horizontal-claro.png',
+  'logo-horizontal-oscuro.png',
+  'logo-vertical-oscuro.svg',
+  'logo-vertical-claro.svg',
+  'isotipo-oscuro.svg',
+  'isotipo-claro.svg',
+  'icono-app.svg',
+  'icono-app-512.png',
+];
+---
+
+<Layout title="Identidad visual | Estudio Técnico Soregaroli" noindex>
+  <main class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+    <p class="eyebrow">Identidad visual</p>
+    <h1 class="h-display mt-5 text-4xl sm:text-6xl">Estudio Técnico Soregaroli</h1>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-steel-2">
+      El isotipo representa las puertas de un ascensor abriéndose: el marco transmite solidez, la línea de luz ámbar
+      simboliza la apertura y la resolución de cada trámite, y la flecha superior indica avance. La tipografía
+      geométrica en mayúsculas espaciadas aporta seriedad y precisión técnica.
+    </p>
+
+    <section class="mt-16 grid gap-5 lg:grid-cols-2">
+      <div class="grid min-h-72 place-items-center rounded-3xl border border-line bg-night p-10">
+        <img src="/logo.svg" alt="Logo sobre fondo oscuro" class="w-full max-w-md" />
+      </div>
+      <div class="grid min-h-72 place-items-center rounded-3xl bg-[#F4F6F9] p-10">
+        <img src="/logo-claro.svg" alt="Logo sobre fondo claro" class="w-full max-w-md" />
+      </div>
+      <div class="grid min-h-72 place-items-center rounded-3xl bg-[#F4F6F9] p-10">
+        <img src="/logo-vertical-claro.svg" alt="Logo vertical" class="w-full max-w-72" />
+      </div>
+      <div class="grid min-h-72 grid-cols-3 place-items-center gap-6 rounded-3xl border border-line bg-night p-10">
+        <img src="/isotipo.svg" alt="Isotipo" class="w-28" />
+        <img src="/favicon.svg" alt="Ícono de app" class="w-20 rounded-[22%]" />
+        <div class="flex flex-col items-center gap-4">
+          <img src="/favicon.svg" alt="" class="w-8" />
+          <img src="/favicon.svg" alt="" class="w-4" />
+        </div>
+      </div>
+    </section>
+
+    <h2 class="mt-20 font-display text-2xl font-semibold text-white">Colores</h2>
+    <ul class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      {
+        colors.map((c) => (
+          <li class="overflow-hidden rounded-2xl border border-line bg-panel">
+            <div class="h-24" style={`background:${c.hex}`} />
+            <div class="p-4">
+              <p class="font-display font-semibold text-white">{c.name}</p>
+              <p class="font-mono text-xs text-steel-2">{c.hex}</p>
+              <p class="mt-1 text-xs text-muted">{c.use}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2 class="mt-20 font-display text-2xl font-semibold text-white">Tipografía</h2>
+    <div class="mt-6 grid gap-5 md:grid-cols-2">
+      <div class="rounded-2xl border border-line bg-panel p-8">
+        <p class="text-xs text-muted">Títulos y logo — Space Grotesk</p>
+        <p class="mt-4 font-display text-5xl font-semibold text-white">Aa Bb 0123</p>
+      </div>
+      <div class="rounded-2xl border border-line bg-panel p-8">
+        <p class="text-xs text-muted">Textos — Inter</p>
+        <p class="mt-4 text-5xl font-medium text-white">Aa Bb 0123</p>
+      </div>
+    </div>
+
+    <h2 class="mt-20 font-display text-2xl font-semibold text-white">Archivos</h2>
+    <p class="mt-2 text-sm text-muted">Carpeta <code class="text-steel">/brand</code> del proyecto.</p>
+    <ul class="mt-4 flex flex-wrap gap-2 text-sm">
+      {files.map((f) => <li class="rounded-full border border-line px-3 py-1.5 text-steel-2">{f}</li>)}
+    </ul>
+
+    <a href="/" class="btn-ghost mt-16">← Volver al sitio</a>
+  </main>
+</Layout>

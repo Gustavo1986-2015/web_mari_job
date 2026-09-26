@@ -1,0 +1,115 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/space-grotesk';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Inter Variable', ui-sans-serif, sans-serif;
+
+  --color-ink: #07090d;
+  --color-night: #0b0f15;
+  --color-panel: #111822;
+  --color-panel-2: #16202c;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-steel: #d5dbe3;
+  --color-steel-2: #a9b4c2;
+  --color-muted: #8793a4;
+  --color-amber: #f2a93b;
+  --color-amber-soft: #f7c77c;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-steel);
+    color-scheme: dark;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-ink);
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--color-amber);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@utility eyebrow {
+  @apply inline-flex items-center gap-3 font-display text-xs font-medium tracking-[0.28em] text-amber uppercase;
+  &::before {
+    content: '';
+    @apply h-px w-8 bg-amber/70;
+  }
+}
+@utility h-display {
+  @apply font-display font-semibold tracking-tight text-balance text-white;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold transition duration-300 ease-out-expo;
+}
+@utility btn-primary {
+  @apply btn bg-amber text-ink shadow-[0_0_0_1px_rgb(242_169_59/0.4),0_10px_40px_-10px_rgb(242_169_59/0.6)] hover:-translate-y-0.5 hover:bg-amber-soft;
+}
+@utility btn-ghost {
+  @apply btn border border-white/15 bg-white/[0.03] text-steel backdrop-blur hover:border-white/30 hover:bg-white/[0.07];
+}
+@utility card {
+  @apply relative overflow-hidden rounded-2xl border border-line bg-panel/70 backdrop-blur-md;
+}
+/* Brillo que sigue al puntero en las tarjetas (ver scripts/interactions.ts) */
+@utility card-glow {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(242 169 59 / 0.1), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}
+@utility field {
+  @apply w-full rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3.5 text-[15px] text-white placeholder:text-muted/70 transition outline-none focus:border-amber/70 focus:bg-white/[0.06] focus:ring-4 focus:ring-amber/10;
+}
+@utility brushed {
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.018) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #1a2330, #111822);
+}
+
+/* Estado inicial de los elementos que se revelan con scroll (solo si JS está activo) */
+.js [data-reveal],
+.js [data-hero],
+.js [data-hero-title] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-hero],
+  .js [data-hero-title] {
+    opacity: 1;
+    transform: none;
+  }
+}

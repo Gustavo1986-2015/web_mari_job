@@ -1,0 +1,20 @@
+---
+interface Props {
+  floor: string;
+  eyebrow: string;
+  title: string;
+}
+const { floor, eyebrow, title } = Astro.props;
+---
+
+<header class="max-w-2xl" data-reveal>
+  <div class="flex items-center gap-4">
+    <span
+      class="grid h-9 min-w-9 place-items-center rounded-lg border border-amber/30 bg-amber/10 px-2 font-display text-sm font-semibold text-amber"
+      aria-hidden="true">{floor}</span
+    >
+    <p class="eyebrow">{eyebrow}</p>
+  </div>
+  <h2 class="h-display mt-6 text-4xl leading-[1.08] sm:text-5xl">{title}</h2>
+  <div class="mt-5 text-lg leading-relaxed text-steel-2"><slot /></div>
+</header>

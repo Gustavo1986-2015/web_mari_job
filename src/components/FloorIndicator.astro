@@ -1,0 +1,85 @@
+---
+// Botonera de ascensor: muestra el piso actual y permite "viajar" a cada sección.
+const floors = [
+  { label: '4', name: 'Contacto', href: '#contacto' },
+  { label: '3', name: 'Nosotros', href: '#nosotros' },
+  { label: '2', name: 'Gestoría', href: '#gestoria' },
+  { label: '1', name: 'Servicios', href: '#servicios' },
+  { label: 'PB', name: 'Inicio', href: '#inicio' },
+];
+---
+
+<aside
+  class="pointer-events-none fixed top-1/2 right-5 z-40 hidden -translate-y-1/2 xl:block 2xl:right-8"
+  aria-label="Indicador de piso"
+>
+  <div class="pointer-events-auto flex flex-col items-center gap-3 rounded-[22px] border border-white/10 brushed p-2.5 shadow-2xl shadow-black/50">
+    <div class="flex h-12 w-14 items-center justify-center gap-1 rounded-xl border border-black/60 bg-[#050608] font-display text-lg font-semibold text-amber shadow-[inset_0_0_14px_rgb(0_0_0/0.9)] [text-shadow:0_0_10px_rgb(242_169_59/0.7)]">
+      <span data-floor-arrow class="text-[10px] opacity-0 transition-opacity">▲</span>
+      <span data-floor-display aria-live="polite">PB</span>
+    </div>
+    <ul class="flex flex-col gap-2">
+      {
+        floors.map((f, i) => (
+          <li class="group relative">
+            <a
+              href={f.href}
+              data-floor-btn={floors.length - 1 - i}
+              class="grid size-10 place-items-center rounded-full border border-white/15 bg-gradient-to-b from-[#2a3441] to-[#151c25] font-display text-xs font-semibold text-steel-2 shadow-[inset_0_1px_0_rgb(255_255_255/0.12)] transition duration-300 hover:text-white data-[active]:border-amber/80 data-[active]:text-amber data-[active]:shadow-[0_0_0_3px_rgb(242_169_59/0.15),0_0_18px_rgb(242_169_59/0.45)]"
+              aria-label={`Ir a ${f.name}`}
+            >
+              {f.label}
+            </a>
+            <span class="pointer-events-none absolute top-1/2 right-full mr-3 -translate-y-1/2 translate-x-1 rounded-md bg-panel px-2.5 py-1 text-xs whitespace-nowrap text-steel opacity-0 transition group-hover:translate-x-0 group-hover:opacity-100">
+              {f.name}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</aside>
+
+<script>
+  import { FLOOR_LABELS, floorAt, watchFloors } from '../scripts/floors';
+
+  const displays = document.querySelectorAll<HTMLElement>('[data-floor-display]');
+  const arrows = document.querySelectorAll<HTMLElement>('[data-floor-arrow]');
+  const buttons = document.querySelectorAll<HTMLElement>('[data-floor-btn]');
+
+  watchFloors();
+  let last = -1;
+  let lastF = 0;
+  let ticking = false;
+
+  const update = () => {
+    ticking = false;
+    const f = floorAt(window.scrollY);
+    const current = Math.round(f);
+    const moving = Math.abs(f - current) > 0.04;
+    const dir = f > lastF ? '▲' : '▼';
+    lastF = f;
+    arrows.forEach((a) => {
+      a.textContent = dir;
+      a.style.opacity = moving ? '1' : '0';
+    });
+    if (current !== last) {
+      last = current;
+      displays.forEach((d) => (d.textContent = FLOOR_LABELS[current] ?? 'PB'));
+      buttons.forEach((b) => b.toggleAttribute('data-active', Number(b.dataset.floorBtn) === current));
+    }
+  };
+  update();
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true },
+  );
+  // Al terminar de viajar, ocultar la flecha.
+  window.addEventListener('scrollend', () => requestAnimationFrame(update));
+</script>
