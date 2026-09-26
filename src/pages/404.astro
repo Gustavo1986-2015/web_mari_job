@@ -1,0 +1,18 @@
+---
+import { ArrowLeft } from '@lucide/astro';
+import Layout from '../layouts/Layout.astro';
+import { site, whatsappUrl } from '../config/site';
+---
+
+<Layout title={`Página no encontrada | ${site.name}`} noindex>
+  <main class="blueprint sheet-frame relative m-2 flex min-h-[calc(100svh-16px)] flex-col items-center justify-center rounded-[24px] px-6 text-center text-white sm:m-3 sm:min-h-[calc(100svh-24px)] sm:rounded-[28px]">
+    <img src="/logo-compacto.svg" alt={site.name} width="300" height="50" class="h-12 w-auto" />
+    <p class="mt-14 font-display text-sm tracking-[0.3em] text-white/60">N.P.T. ±0.00 · ERROR 404</p>
+    <h1 class="mt-4 font-display text-4xl font-semibold sm:text-6xl">Este piso no existe.</h1>
+    <p class="mt-4 max-w-md text-lg text-white/80">La página que busca no está disponible. Lo llevamos de vuelta a planta baja.</p>
+    <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+      <a href="/" class="btn-white"><ArrowLeft size={16} /> Volver al inicio</a>
+      <a href={whatsappUrl()} target="_blank" rel="noopener" class="btn-outline-white">Consultar por WhatsApp</a>
+    </div>
+  </main>
+</Layout>
